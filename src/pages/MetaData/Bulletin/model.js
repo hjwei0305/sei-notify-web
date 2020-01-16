@@ -7,7 +7,7 @@ const { pathMatchRegexp, dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
 
 export default modelExtend(model, {
-  namespace: "notifyContent",
+  namespace: "bulletin",
 
   state: {
     list: [],
@@ -17,7 +17,7 @@ export default modelExtend(model, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (pathMatchRegexp("/metaData/notifyContent", location.pathname)) {
+        if (pathMatchRegexp("/metaData/bulletin", location.pathname)) {
           dispatch({
             type: "queryList"
           });

@@ -16,8 +16,8 @@ const { authAction } = utils;
 
 @withRouter
 @ResizeMe()
-@connect(({ notifyContent, loading }) => ({ notifyContent, loading }))
-class NotifyContent extends Component {
+@connect(({ bulletin, loading }) => ({ bulletin, loading }))
+class Unit extends Component {
 
   constructor(props) {
     super(props);
@@ -27,9 +27,9 @@ class NotifyContent extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if (!isEqual(prevState.list, this.props.notifyContent.list)) {
+    if (!isEqual(prevState.list, this.props.bulletin.list)) {
       this.setState({
-        list: this.props.notifyContent.list
+        list: this.props.bulletin.list
       });
     }
   }
@@ -37,14 +37,14 @@ class NotifyContent extends Component {
   reloadData = _ => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/queryList"
+      type: "bulletin/queryList"
     });
   };
 
   add = _ => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/updateState",
+      type: "bulletin/updateState",
       payload: {
         showModal: true,
         rowData: null
@@ -55,7 +55,7 @@ class NotifyContent extends Component {
   edit = rowData => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/updateState",
+      type: "bulletin/updateState",
       payload: {
         showModal: true,
         rowData: rowData
@@ -66,14 +66,14 @@ class NotifyContent extends Component {
   save = data => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/save",
+      type: "bulletin/save",
       payload: {
         data
       },
       callback: res => {
         if (res.success) {
           dispatch({
-            type: "notifyContent/updateState",
+            type: "bulletin/updateState",
             payload: {
               showModal: false
             }
@@ -90,7 +90,7 @@ class NotifyContent extends Component {
       delRowId: record.id
     }, _ => {
       dispatch({
-        type: "notifyContent/del",
+        type: "bulletin/del",
         payload: {
           id: record.id
         },
@@ -109,7 +109,7 @@ class NotifyContent extends Component {
   closeFormModal = _ => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/updateState",
+      type: "bulletin/updateState",
       payload: {
         showModal: false,
         rowData: null
@@ -118,9 +118,9 @@ class NotifyContent extends Component {
   };
 
   render() {
-    const { notifyContent, loading } = this.props;
+    const { bulletin, loading } = this.props;
     const { delRowId, list } = this.state;
-    const { showModal, rowData } = notifyContent;
+    const { showModal, rowData } = bulletin;
     const columns = [
       {
         title: formatMessage({ id: "global.operation", defaultMessage: "操作" }),
@@ -154,7 +154,7 @@ class NotifyContent extends Component {
                   onConfirm={_ => this.del(record)}
                 >
                   {
-                    loading.effects["notifyContent/del"] && delRowId === record.id
+                    loading.effects["unit/del"] && delRowId === record.id
                       ? <ExtIcon className="del-loading" type="loading" antd />
                       : <ExtIcon className="del" type="delete" antd />
                   }
@@ -164,34 +164,54 @@ class NotifyContent extends Component {
           </span>
         )
       },
+      // 类型值优先级发布时间生效日期截止日期
       {
-        title: formatMessage({ id: "global.code", defaultMessage: "代码" }),
-        key: "code",
-        dataIndex: "code",
+        title: "标题",
+        key: "subject",
+        dataIndex: "subject",
         width: 120,
         required: true,
       },
       {
-        title: formatMessage({ id: "global.name", defaultMessage: "名称" }),
-        key: "name",
-        dataIndex: "name",
-        width: 220,
+        title: "发布类型",
+        key: "targetTypeRemark",
+        dataIndex: "targetTypeRemark",
         required: true,
       },
       {
-        title: formatMessage({ id: "global.frozen", defaultMessage: "内容" }),
-        key: "content",
-        dataIndex: "content",
-        className: "content",
-        width: 450,
-      }
+        title: "类型值",
+        key: "tagName",
+        dataIndex: "tagName",
+        className: "tagName",
+      },
+      {
+        title: "优先级",
+        key: "priorityRemark",
+        dataIndex: "priorityRemark",
+        required: true,
+      },{
+        title: "发布时间",
+        key: "releaseDate",
+        dataIndex: "releaseDate",
+        required: true,
+      },{
+        title: "生效日期",
+        key: "effectiveDate",
+        dataIndex: "effectiveDate",
+        required: true,
+      },{
+        title: "截止日期",
+        key: "invalidDate",
+        dataIndex: "invalidDate",
+        required: true,
+      },
     ];
     const formModalProps = {
       save: this.save,
       rowData,
       showModal,
       closeFormModal: this.closeFormModal,
-      saving: loading.effects["notifyContent/save"]
+      saving: loading.effects["unit/save"]
     };
     const toolBarProps = {
       left: (
@@ -217,7 +237,7 @@ class NotifyContent extends Component {
     return (
       <div className={cls(styles["container-box"])} >
         {
-          loading.effects["notifyContent/queryList"]
+          loading.effects["unit/queryList"]
             ? <PageLoader />
             : null
         }
@@ -238,4 +258,4 @@ class NotifyContent extends Component {
   }
 }
 
-export default NotifyContent;
+export default Unit;

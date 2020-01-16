@@ -17,6 +17,10 @@ const menuData = [
         id: '101`',
         name: '公告主数据',
         path: '/metaData/notifyContent',
+      }, {
+        id: '102`',
+        name: '通告发布',
+        path: '/metaData/notifyContent',
       },
     ],
   },
