@@ -17,7 +17,7 @@ const { authAction } = utils;
 @withRouter
 @ResizeMe()
 @connect(({ bulletin, loading }) => ({ bulletin, loading }))
-class Unit extends Component {
+class Bulletin extends Component {
 
   constructor(props) {
     super(props);
@@ -27,6 +27,7 @@ class Unit extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
+    console.log("我的数据ne",this.props.bulletin,this.props.bulletin.list);
     if (!isEqual(prevState.list, this.props.bulletin.list)) {
       this.setState({
         list: this.props.bulletin.list
@@ -164,7 +165,6 @@ class Unit extends Component {
           </span>
         )
       },
-      // 类型值优先级发布时间生效日期截止日期
       {
         title: "标题",
         key: "subject",
@@ -211,7 +211,7 @@ class Unit extends Component {
       rowData,
       showModal,
       closeFormModal: this.closeFormModal,
-      saving: loading.effects["unit/save"]
+      saving: loading.effects["bulletin/save"]
     };
     const toolBarProps = {
       left: (
@@ -237,7 +237,7 @@ class Unit extends Component {
     return (
       <div className={cls(styles["container-box"])} >
         {
-          loading.effects["unit/queryList"]
+          loading.effects["bulletin/queryList"]
             ? <PageLoader />
             : null
         }
@@ -258,4 +258,4 @@ class Unit extends Component {
   }
 }
 
-export default Unit;
+export default Bulletin;
