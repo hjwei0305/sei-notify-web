@@ -119,7 +119,10 @@ class NotifyContent extends Component {
 
   render() {
     const { notifyContent, loading } = this.props;
-    const { delRowId, list } = this.state;
+    let { delRowId, list } = this.state;
+    if(!list){
+      list = [];
+    }
     const { showModal, rowData } = notifyContent;
     const columns = [
       {

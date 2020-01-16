@@ -6,7 +6,7 @@ const GATEWAY = 'mobileapi-gateway';
 
 const APP_BASE = base;
 
-const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '/mocker.api' : `../${APP_BASE}`;
+const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '/mocker.api' : `/mocker.api`;
 
 const SERVER_PATH =
   process.env.NODE_ENV !== 'production' ? '/mocker.api' : `${BASE_DOMAIN}${GATEWAY}`;

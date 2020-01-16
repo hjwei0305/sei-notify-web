@@ -120,7 +120,10 @@ class Bulletin extends Component {
 
   render() {
     const { bulletin, loading } = this.props;
-    const { delRowId, list } = this.state;
+    let { delRowId, list } = this.state;
+    if(!list){
+      list = [];
+    }
     const { showModal, rowData } = bulletin;
     const columns = [
       {
