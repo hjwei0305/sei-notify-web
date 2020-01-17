@@ -1,9 +1,11 @@
 import React, { PureComponent } from "react";
-import { Button, Form, Input, Modal, Row, Col } from "antd";
+import {Button, Form, Input, Modal, Row, Col, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
-
+import { DatePicker } from 'antd';
+import {RichEditor} from "seid"
+const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
-const { TextArea } = Input;
+const RadioGroup = Radio.Group;
 const formItemLayout = {
   labelCol: {
     span: 4
@@ -41,7 +43,6 @@ class FormModal extends PureComponent {
     const title = rowData
       ?  "修改通知内容"
       :  "新建通知内容" ;
-    const content = form.getFieldValue("content")||rowData.content;
     return (
       <Modal
         destroyOnClose
@@ -51,37 +52,60 @@ class FormModal extends PureComponent {
         maskClosable={false}
         footer={null}
         title={title}
-        width={"90%"}
+        width={"100%"}
       >
         <Row>
-          <Col span={9}>
             <Form {...formItemLayout} layout="horizontal">
-              <FormItem label={formatMessage({ id: "global.code", defaultMessage: "代码" })}>
+              <FormItem label={"标题"}>
                 {getFieldDecorator("code", {
                   initialValue: rowData ? rowData.code : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.code.required", defaultMessage: "代码不能为空" })
+                    message: formatMessage({ id: "global.code.required", defaultMessage: "标题不能为空" })
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "名称" })}>
+              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "发布机构" })}>
                 {getFieldDecorator("name", {
                   initialValue: rowData ? rowData.name : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "名称不能为空" })
+                    message: formatMessage({ id: "global.name.required", defaultMessage: "发布机构不能为空" })
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "内容" })}>
+              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "优先级" })}>
                 {getFieldDecorator("content", {
                   initialValue: rowData ? rowData.content : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "内容不能为空" })
+                    message: formatMessage({ id: "global.name.required", defaultMessage: "优先级不能为空" })
                   }]
-                })(<TextArea rows={5}/>)}
+                })(
+                  <RadioGroup>
+                    <Radio key="high">高</Radio>
+                    <Radio key="high1">紧急</Radio>
+                    <Radio key="high2">一般</Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "有效期间" })}>
+                {getFieldDecorator("name", {
+                  initialValue: rowData ? rowData.name : "",
+                  rules: [{
+                    required: true,
+                    message: formatMessage({ id: "global.name.required", defaultMessage: "有效期间不能为空" })
+                  }]
+                })(<RangePicker  />)}
+              </FormItem>
+              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "通告内容" })}>
+                {getFieldDecorator("name", {
+                  initialValue: rowData ? rowData.name : "",
+                  rules: [{
+                    required: true,
+                    message: formatMessage({ id: "global.name.required", defaultMessage: "通告内容不能为空" })
+                  }]
+                })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
               </FormItem>
               <FormItem wrapperCol={buttonWrapper} className="btn-submit">
                 <Button
@@ -93,15 +117,6 @@ class FormModal extends PureComponent {
                 </Button>
               </FormItem>
             </Form>
-          </Col>
-          <Col span={15}>
-            {<FormItem wrapperCol={contentWrapper}>
-              <div style={{border:"1px solid #c4cfd5",margin:"2px 0 0 40px",borderRadius: "3px",
-                height:"auto",minHeight:"32px"}}>
-                <p style={{margin:"10px"}} dangerouslySetInnerHTML={{ __html: content||"内容展示区域" }}/>
-              </div>
-            </FormItem>}
-          </Col>
         </Row>
       </Modal>
     );

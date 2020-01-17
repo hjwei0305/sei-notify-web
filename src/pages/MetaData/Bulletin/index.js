@@ -27,7 +27,6 @@ class Bulletin extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    console.log("我的数据ne",this.props.bulletin,this.props.bulletin.list);
     if (!isEqual(prevState.list, this.props.bulletin.list)) {
       this.setState({
         list: this.props.bulletin.list

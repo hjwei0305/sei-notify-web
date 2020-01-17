@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import withRouter from "umi/withRouter";
 import { connect } from "dva";
 import cls from "classnames";
-import { Button, Popconfirm, Tag } from "antd";
+import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import isEqual from "react-fast-compare";
 import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
@@ -52,13 +52,12 @@ class NotifyContent extends Component {
     });
   };
 
-  edit = rowData => {
+  edit = record => {
     const { dispatch } = this.props;
     dispatch({
-      type: "notifyContent/updateState",
+      type: "notifyContent/editNotify",
       payload: {
-        showModal: true,
-        rowData: rowData
+        id: record.id,
       }
     });
   };
@@ -95,7 +94,7 @@ class NotifyContent extends Component {
           id: record.id
         },
         callback: res => {
-          if (res.success) {
+          if (res.successful) {
             this.setState({
               delRowId: null
             });
@@ -126,7 +125,7 @@ class NotifyContent extends Component {
     const { showModal, rowData } = notifyContent;
     const columns = [
       {
-        title: formatMessage({ id: "global.operation", defaultMessage: "操作" }),
+        title: formatMessage({ id: "notifyContent.operation", defaultMessage: "操作" }),
         key: "operation",
         width: 100,
         align: "center",
@@ -153,7 +152,7 @@ class NotifyContent extends Component {
                   key={UNIT_BTN_KEY.DELETE}
                   placement="topLeft"
                   ignore='true'
-                  title={formatMessage({ id: "global.delete.confirm", defaultMessage: "确定要删除吗？提示：删除后不可恢复" })}
+                  title={formatMessage({ id: "notifyContent.delete.confirm", defaultMessage: "确定要删除吗？提示：删除后不可恢复" })}
                   onConfirm={_ => this.del(record)}
                 >
                   {
@@ -168,21 +167,21 @@ class NotifyContent extends Component {
         )
       },
       {
-        title: formatMessage({ id: "global.code", defaultMessage: "代码" }),
+        title: formatMessage({ id: "notifyContent.code", defaultMessage: "代码" }),
         key: "code",
         dataIndex: "code",
         width: 120,
         required: true,
       },
       {
-        title: formatMessage({ id: "global.name", defaultMessage: "名称" }),
+        title: formatMessage({ id: "notifyContent.name", defaultMessage: "名称" }),
         key: "name",
         dataIndex: "name",
         width: 220,
         required: true,
       },
       {
-        title: formatMessage({ id: "global.frozen", defaultMessage: "内容" }),
+        title: formatMessage({ id: "notifyContent.content", defaultMessage: "内容" }),
         key: "content",
         dataIndex: "content",
         className: "content",
@@ -207,15 +206,15 @@ class NotifyContent extends Component {
                 onClick={this.add}
                 ignore='true'
               >
-                <FormattedMessage id="global.add" defaultMessage="新建" />
+                <FormattedMessage id="notifyContent.add" defaultMessage="新建" />
               </Button>
             )
           }
           <Button onClick={this.reloadData}>
-            <FormattedMessage id="global.refresh" defaultMessage="刷新" />
+            <FormattedMessage id="notifyContent.refresh" defaultMessage="刷新" />
           </Button>
         </Fragment>
-      )
+      ),
     };
     return (
       <div className={cls(styles["container-box"])} >

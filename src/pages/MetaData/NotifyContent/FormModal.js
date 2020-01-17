@@ -39,9 +39,12 @@ class FormModal extends PureComponent {
     const { form, rowData, closeFormModal, saving, showModal } = this.props;
     const { getFieldDecorator } = form;
     const title = rowData
-      ?  "修改通知内容"
-      :  "新建通知内容" ;
-    const content = form.getFieldValue("content")||rowData.content;
+      ?  formatMessage({ id: "notifyContent.edit.modal", defaultMessage: "修改内容模板" })
+      :  formatMessage({ id: "notifyContent.add.modal", defaultMessage: "新建内容模板" });
+    let content = form.getFieldValue("content")||rowData&&rowData.content;
+    if(form.getFieldValue("content")===""){
+      content = "";
+    }
     return (
       <Modal
         destroyOnClose
@@ -56,30 +59,30 @@ class FormModal extends PureComponent {
         <Row>
           <Col span={9}>
             <Form {...formItemLayout} layout="horizontal">
-              <FormItem label={formatMessage({ id: "global.code", defaultMessage: "代码" })}>
+              <FormItem label={formatMessage({ id: "notifyContent.code", defaultMessage: "代码" })}>
                 {getFieldDecorator("code", {
                   initialValue: rowData ? rowData.code : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.code.required", defaultMessage: "代码不能为空" })
+                    message: formatMessage({ id: "notifyContent.code.required", defaultMessage: "代码不能为空" })
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "名称" })}>
+              <FormItem label={formatMessage({ id: "notifyContent.name", defaultMessage: "名称" })}>
                 {getFieldDecorator("name", {
                   initialValue: rowData ? rowData.name : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "名称不能为空" })
+                    message: formatMessage({ id: "notifyContent.name.required", defaultMessage: "名称不能为空" })
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "内容" })}>
+              <FormItem label={formatMessage({ id: "notifyContent.content", defaultMessage: "内容" })}>
                 {getFieldDecorator("content", {
                   initialValue: rowData ? rowData.content : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "内容不能为空" })
+                    message: formatMessage({ id: "notifyContent.content.required", defaultMessage: "内容不能为空" })
                   }]
                 })(<TextArea rows={5}/>)}
               </FormItem>
@@ -89,7 +92,7 @@ class FormModal extends PureComponent {
                   loading={saving}
                   onClick={this.onFormSubmit}
                 >
-                  <FormattedMessage id="global.ok" defaultMessage="确定" />
+                  <FormattedMessage id="notifyContent.ok" defaultMessage="确定" />
                 </Button>
               </FormItem>
             </Form>
@@ -98,7 +101,8 @@ class FormModal extends PureComponent {
             {<FormItem wrapperCol={contentWrapper}>
               <div style={{border:"1px solid #c4cfd5",margin:"2px 0 0 40px",borderRadius: "3px",
                 height:"auto",minHeight:"32px"}}>
-                <p style={{margin:"10px"}} dangerouslySetInnerHTML={{ __html: content||"内容展示区域" }}/>
+                <p style={{margin:"10px"}} dangerouslySetInnerHTML={{ __html: content||
+                formatMessage({ id: "notifyContent.content.hint", defaultMessage: "内容展示区域" })}}/>
               </div>
             </FormItem>}
           </Col>

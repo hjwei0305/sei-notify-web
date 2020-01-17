@@ -15,7 +15,7 @@ const menuData = [
     children: [
       {
         id: '101`',
-        name: '公告主数据',
+        name: '内容模板',
         path: '/metaData/notifyContent',
       }, {
         id: '102`',

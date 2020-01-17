@@ -1,4 +1,4 @@
-import { del, getList, save } from "./service";
+import {del, findOne, getList, save} from "./service";
 import { message } from "antd";
 import { formatMessage } from "umi-plugin-react/locale";
 import { utils } from 'seid';
@@ -26,6 +26,20 @@ export default modelExtend(model, {
     }
   },
   effects: {
+    * editNotify({payload},{ call, put}){
+      const ds = yield call(findOne,payload);
+      if(ds.success){
+        yield put({
+          type: "updateState",
+          payload: {
+            showModal: true,
+            rowData: ds.data,
+          }
+        });
+      } else {
+        throw ds;
+      }
+    },
     * queryList({ payload }, { call, put }) {
       const ds = yield call(getList, payload);
       if (ds.success) {
