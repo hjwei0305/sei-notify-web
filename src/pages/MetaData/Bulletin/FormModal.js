@@ -66,7 +66,7 @@ class FormModal extends PureComponent {
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={getLocales("institution","发布机构")}>d
+              <FormItem label={getLocales("institution","发布机构")}>
                 {getFieldDecorator("institution", {
                   initialValue: rowData ? rowData.institution : "",
                   rules: [{
@@ -92,12 +92,12 @@ class FormModal extends PureComponent {
               </FormItem>
               <FormItem label={getLocales("effectiveDate","有效期间")}>
                 {getFieldDecorator("effectiveDate", {
-                  initialValue: rowData ? rowData.effectiveDate : "",
+                  initialValue: rowData ? rowData.effectiveDate : null,
                   rules: [{
                     required: true,
                     message: getLocales("effectiveDate.required","有效期间不能为空")
                   }]
-                })(<RangePicker style={{width:"100%"}} />)}
+                })(<Input style={{width:"100%"}} />)}
               </FormItem>
               <FormItem label={getLocales("content","通告内容")}>
                 {getFieldDecorator("content", {

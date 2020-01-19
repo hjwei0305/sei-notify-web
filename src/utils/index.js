@@ -1,11 +1,10 @@
 import { formatMessage } from "umi-plugin-react/locale";
-import {message} from "antd"
 import constants from './constants';
 //key 值
-export  function getLocale(modelueName,key,desc) {
+export  function getLocale(moduleName,key,desc) {
   //配置唯一key值，加上moduleName为前缀
   let localeObj = {};
-  key = modelueName + "." + key;
+  key = moduleName + "." + key;
   localeObj.id = key;
   localeObj.defaultMessage = desc;
   return formatMessage(localeObj);
@@ -13,8 +12,8 @@ export  function getLocale(modelueName,key,desc) {
 function getLocalesCN(moduleName, LocalesObj) {
   let newLocaleObj = {};
   for(let key of Object.keys(LocalesObj)){
-    key = moduleName + "." + key;
-    newLocaleObj[key] = LocalesObj[key].CN;
+    let withModulekey = moduleName + "." + key;
+    newLocaleObj[withModulekey] = LocalesObj[key].CN;
     if(!newLocaleObj[key]){
       //自动加上校验的多语言
       if(key.includes("required")||key.includes("require")){
@@ -29,8 +28,8 @@ function getLocalesCN(moduleName, LocalesObj) {
 function getLocalesUS(moduleName, LocalesObj) {
   let newLocaleObj = {};
   for(let key of Object.keys(LocalesObj)){
-    key = moduleName + "." + key;
-    newLocaleObj[key] = LocalesObj[key].US;
+    let withModulekey = moduleName + "." + key;
+    newLocaleObj[withModulekey] = LocalesObj[key].US;
     if(!newLocaleObj[key]){
       //自动加上校验的多语言
       if(key.includes("required")||key.includes("require")){
