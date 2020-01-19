@@ -3,11 +3,15 @@ import {constants} from '../../../utils';
 
 const { request } = utils;
 
-const { LOCAL_PATH } = constants;
+const { LOCAL_PATH, BASIC_PATH } = constants;
+//本地线上数据切换
+const useMocker = true;
 
-/** 获取计量单位列表*/
+/** 获取列表*/
 export async function getList(params) {
-  const url = `${LOCAL_PATH}/notify-service/bulletin/findByPage`;
+  const url = useMocker?`${LOCAL_PATH}/content/findAll`:
+    `${BASIC_PATH}/sei-notify/bulletinMsg/findBulletinByPage4User`;
+  // const url = `${LOCAL_PATH}/notify-service/bulletin/findByPage`;
   return request({
     url,
     method: "POST",

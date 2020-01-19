@@ -54,7 +54,7 @@ class FormModal extends PureComponent {
         maskClosable={false}
         footer={null}
         title={title}
-        width={"90%"}
+        width="90%"
       >
         <Row>
           <Col span={9}>

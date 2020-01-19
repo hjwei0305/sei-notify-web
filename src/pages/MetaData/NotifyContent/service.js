@@ -7,7 +7,7 @@ const { LOCAL_PATH, BASIC_PATH } = constants;
 //本地线上数据切换
 const useMocker = false;
 
-/** 获取计量单位列表*/
+/** 获取列表*/
 export async function getList(params) {
   const url = useMocker?`${LOCAL_PATH}/content/findAll`:
     `${BASIC_PATH}/sei-notify/contentTemplate/findAll`;

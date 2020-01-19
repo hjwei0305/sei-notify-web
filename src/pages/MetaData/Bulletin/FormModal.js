@@ -1,8 +1,9 @@
 import React, { PureComponent } from "react";
-import {Button, Form, Input, Modal, Row, Col, Radio} from "antd";
+import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor} from "seid"
+import {RichEditor} from "seid";
+import styles from "./FormMoal.less";
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -11,12 +12,11 @@ const formItemLayout = {
     span: 4
   },
   wrapperCol: {
-    span: 20
+    span: 18
   }
 };
 
 const buttonWrapper = { span: 20, offset: 4 };
-const contentWrapper = { span: 24};
 @Form.create()
 class FormModal extends PureComponent {
   constructor(props) {
@@ -52,7 +52,7 @@ class FormModal extends PureComponent {
         maskClosable={false}
         footer={null}
         title={title}
-        width={"100%"}
+        wrapClassName={styles["order-box"]}
       >
         <Row>
             <Form {...formItemLayout} layout="horizontal">
@@ -96,7 +96,7 @@ class FormModal extends PureComponent {
                     required: true,
                     message: formatMessage({ id: "global.name.required", defaultMessage: "有效期间不能为空" })
                   }]
-                })(<RangePicker  />)}
+                })(<RangePicker style={{width:"100%"}} />)}
               </FormItem>
               <FormItem label={formatMessage({ id: "global.name", defaultMessage: "通告内容" })}>
                 {getFieldDecorator("name", {

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import withRouter from "umi/withRouter";
 import { connect } from "dva";
 import cls from "classnames";
-import { Button, Popconfirm, Tag } from "antd";
+import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import isEqual from "react-fast-compare";
 import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
@@ -196,6 +196,7 @@ class Bulletin extends Component {
         key: "releaseDate",
         dataIndex: "releaseDate",
         required: true,
+        width: 180
       },{
         title: "生效日期",
         key: "effectiveDate",

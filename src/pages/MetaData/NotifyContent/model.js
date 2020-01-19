@@ -28,6 +28,7 @@ export default modelExtend(model, {
   effects: {
     * editNotify({payload},{ call, put}){
       const ds = yield call(findOne,payload);
+      console.log("fsdafsa",ds);
       if(ds.success){
         yield put({
           type: "updateState",

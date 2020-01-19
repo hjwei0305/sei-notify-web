@@ -1,0 +1,51 @@
+@import '../../../themes/vars.less';
+
+.order-box {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: @white;
+  :global {
+    .ant-modal,
+    .ant-modal-content {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 0;
+      overflow: hidden;
+    }
+    .ant-modal {
+      top: 0;
+      padding-bottom: 0;
+      .ant-modal-body {
+        padding: 0;
+        height: calc(~"100vh - 55px");
+        display: flex;
+        justify-content: center;
+        background-color: @white;
+        position: relative;
+        .order-content-box {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100vw;
+          .list-empty {
+            display: flex;
+            position: relative;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            background-color: @white;
+            height: 100vh;
+            .ant-empty-image {
+              height: 220px;
+              img {
+                height: 220px;
+                width: 220px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
