@@ -1,4 +1,4 @@
-import {getLocale, getLocalesCN, getLocalesUS} from "../../../utils/index";
+import {getLocale, getLocalesCN, getLocalesUS} from "../../../../utils/index";
 const bulletinLocales = {
   "editBulletin": {CN:"修改通知内容",US:"修改通知内容"},
   "addBulletin":  {CN:"新建通知内容",US:"新建通知内容"},

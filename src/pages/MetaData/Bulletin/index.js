@@ -9,7 +9,7 @@ import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
 import { constants } from "@/utils";
 import FormModal from "./FormModal";
 import styles from "./index.less";
-import {getLocales} from "./locales";
+import {getLocales} from "./locales/locales";
 
 const { UNIT_BTN_KEY } = constants;
 const { authAction } = utils;

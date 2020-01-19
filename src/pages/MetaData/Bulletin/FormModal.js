@@ -4,7 +4,7 @@ import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
 import {RichEditor} from "seid";
 import styles from "./FormMoal.less";
-import {getLocales} from "./locales";
+import {getLocales} from "./locales/locales";
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
