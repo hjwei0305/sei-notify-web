@@ -5,10 +5,10 @@ import { getAuthorization, loginNew } from "@/services/api";
 import { utils } from "seid";
 import constants from "@/utils/constants";
 
-const { storage,constants:appConstants} = utils;
+const { storage, constants: appConstants} = utils;
 const { CONST_GLOBAL} = appConstants;
 const { sessionStorage } = storage;
-const { APP_GLOBAL, LOGIN_STATUS } = constants;
+const { APP_GLOBAL } = constants;
 
 export default {
   namespace: "global",

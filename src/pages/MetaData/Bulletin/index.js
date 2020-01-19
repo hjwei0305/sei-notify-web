@@ -9,6 +9,7 @@ import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
 import { constants } from "@/utils";
 import FormModal from "./FormModal";
 import styles from "./index.less";
+import {getLocales} from "./locales";
 
 const { UNIT_BTN_KEY } = constants;
 const { authAction } = utils;
@@ -168,42 +169,42 @@ class Bulletin extends Component {
         )
       },
       {
-        title: "标题",
+        title: getLocales("subject","标题"),
         key: "subject",
         dataIndex: "subject",
         width: 120,
         required: true,
       },
       {
-        title: "发布类型",
+        title: getLocales("targetType","发布类型"),
         key: "targetTypeRemark",
         dataIndex: "targetTypeRemark",
         required: true,
       },
       {
-        title: "类型值",
+        title: getLocales("tagName","类型值"),
         key: "tagName",
         dataIndex: "tagName",
         className: "tagName",
       },
       {
-        title: "优先级",
+        title: getLocales("priority","优先级"),
         key: "priorityRemark",
         dataIndex: "priorityRemark",
         required: true,
       },{
-        title: "发布时间",
+        title: getLocales("releaseDate","发布时间"),
         key: "releaseDate",
         dataIndex: "releaseDate",
         required: true,
         width: 180
       },{
-        title: "生效日期",
+        title: getLocales("effectiveDate","生效时间"),
         key: "effectiveDate",
         dataIndex: "effectiveDate",
         required: true,
       },{
-        title: "截止日期",
+        title: getLocales("invalidData","截止日期"),
         key: "invalidDate",
         dataIndex: "invalidDate",
         required: true,

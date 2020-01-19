@@ -179,13 +179,6 @@ class NotifyContent extends Component {
         dataIndex: "name",
         width: 220,
         required: true,
-      },
-      {
-        title: formatMessage({ id: "notifyContent.content", defaultMessage: "内容" }),
-        key: "content",
-        dataIndex: "content",
-        className: "content",
-        width: 450,
       }
     ];
     const formModalProps = {

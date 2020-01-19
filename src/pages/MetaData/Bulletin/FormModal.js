@@ -4,6 +4,7 @@ import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
 import {RichEditor} from "seid";
 import styles from "./FormMoal.less";
+import {getLocales} from "./locales";
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -41,8 +42,8 @@ class FormModal extends PureComponent {
     const { form, rowData, closeFormModal, saving, showModal } = this.props;
     const { getFieldDecorator } = form;
     const title = rowData
-      ?  "修改通知内容"
-      :  "新建通知内容" ;
+      ?  getLocales("editBulletin","修改通知内容")
+      :  getLocales("addBulletin","新建通知内容");
     return (
       <Modal
         destroyOnClose
@@ -56,30 +57,30 @@ class FormModal extends PureComponent {
       >
         <Row>
             <Form {...formItemLayout} layout="horizontal">
-              <FormItem label={"标题"}>
-                {getFieldDecorator("code", {
-                  initialValue: rowData ? rowData.code : "",
+              <FormItem label={getLocales("subject","标题")}>
+                {getFieldDecorator("subject", {
+                  initialValue: rowData ? rowData.subject : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.code.required", defaultMessage: "标题不能为空" })
+                    message: getLocales("subject.required","标题不能为空")
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "发布机构" })}>
-                {getFieldDecorator("name", {
-                  initialValue: rowData ? rowData.name : "",
+              <FormItem label={getLocales("institution","发布机构")}>d
+                {getFieldDecorator("institution", {
+                  initialValue: rowData ? rowData.institution : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "发布机构不能为空" })
+                    message: getLocales("institution.required","发布机构不能为空")
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "优先级" })}>
-                {getFieldDecorator("content", {
-                  initialValue: rowData ? rowData.content : "",
+              <FormItem label={getLocales("priority","优先级")}>
+                {getFieldDecorator("priority", {
+                  initialValue: rowData ? rowData.priority : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "优先级不能为空" })
+                    message: getLocales("priority.required","优先级不能为空")
                   }]
                 })(
                   <RadioGroup>
@@ -89,21 +90,21 @@ class FormModal extends PureComponent {
                   </RadioGroup>
                 )}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "有效期间" })}>
-                {getFieldDecorator("name", {
-                  initialValue: rowData ? rowData.name : "",
+              <FormItem label={getLocales("effectiveDate","有效期间")}>
+                {getFieldDecorator("effectiveDate", {
+                  initialValue: rowData ? rowData.effectiveDate : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "有效期间不能为空" })
+                    message: getLocales("effectiveDate.required","有效期间不能为空")
                   }]
                 })(<RangePicker style={{width:"100%"}} />)}
               </FormItem>
-              <FormItem label={formatMessage({ id: "global.name", defaultMessage: "通告内容" })}>
-                {getFieldDecorator("name", {
-                  initialValue: rowData ? rowData.name : "",
+              <FormItem label={getLocales("content","通告内容")}>
+                {getFieldDecorator("content", {
+                  initialValue: rowData ? rowData.content : "",
                   rules: [{
                     required: true,
-                    message: formatMessage({ id: "global.name.required", defaultMessage: "通告内容不能为空" })
+                    message: getLocales("content.required","通告内容不能为空！")
                   }]
                 })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
               </FormItem>

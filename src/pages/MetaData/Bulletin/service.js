@@ -9,7 +9,7 @@ const useMocker = true;
 
 /** 获取列表*/
 export async function getList(params) {
-  const url = useMocker?`${LOCAL_PATH}/content/findAll`:
+  const url = useMocker?`${LOCAL_PATH}/notify-service/bulletin/findByPage`:
     `${BASIC_PATH}/sei-notify/bulletinMsg/findBulletinByPage4User`;
   // const url = `${LOCAL_PATH}/notify-service/bulletin/findByPage`;
   return request({
