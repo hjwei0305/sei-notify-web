@@ -12,8 +12,8 @@ export  function getLocale(moduleName,key,desc) {
 function getLocalesCN(moduleName, LocalesObj) {
   let newLocaleObj = {};
   for(let key of Object.keys(LocalesObj)){
-    let withModulekey = moduleName + "." + key;
-    newLocaleObj[withModulekey] = LocalesObj[key].CN;
+    let withModuleKey = moduleName + "." + key;
+    newLocaleObj[withModuleKey] = LocalesObj[key].CN;
     if(!newLocaleObj[key]){
       //自动加上校验的多语言
       if(key.includes("required")||key.includes("require")){
@@ -28,8 +28,8 @@ function getLocalesCN(moduleName, LocalesObj) {
 function getLocalesUS(moduleName, LocalesObj) {
   let newLocaleObj = {};
   for(let key of Object.keys(LocalesObj)){
-    let withModulekey = moduleName + "." + key;
-    newLocaleObj[withModulekey] = LocalesObj[key].US;
+    let withModuleKey = moduleName + "." + key;
+    newLocaleObj[withModuleKey] = LocalesObj[key].US;
     if(!newLocaleObj[key]){
       //自动加上校验的多语言
       if(key.includes("required")||key.includes("require")){
