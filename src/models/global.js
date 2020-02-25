@@ -1,24 +1,30 @@
 import router from "umi/router";
 import { stringify } from "qs";
 import { message } from "antd";
-import { getAuthorization, loginNew } from "@/services/api";
-import { utils } from "seid";
-import constants from "@/utils/constants";
+import { userUtils, eventBus } from '@/utils';
+import { login, getAuthorizedFeatures } from "@/services/api";
 
-const { storage, constants: appConstants} = utils;
-const { CONST_GLOBAL} = appConstants;
-const { sessionStorage } = storage;
-const { APP_GLOBAL } = constants;
+const {
+  clearUserInfo,
+  getCurrentLocale,
+  setCurrentLocale,
+  setCurrentUser,
+  setSessionId,
+  getCurrentUser,
+  setCurrentAuth,
+  setCurrentPolicy,
+} = userUtils;
+
+const locale = getCurrentLocale() || 'zh-CN';
 
 export default {
   namespace: "global",
   state: {
-    logged: false,
-    operateAuthority: [],
     showTenant: false,
     userAuthLoaded: false,
     locationPathName: "/",
-    locationQuery: {}
+    locationQuery: {},
+    locale: locale,
   },
   subscriptions: {
     setupHistory({ dispatch, history }) {
@@ -31,34 +37,19 @@ export default {
           }
         });
       });
+    },
+    eventBusListenter({ dispatch, }) {
+      eventBus.addListener('redirectLogin', _ => {
+        dispatch({
+          type: 'redirectLogin',
+        })
+      });
     }
   },
   effects: {
-    * getAuthorization({ payload }, { call, put }) {
-      const ds = yield call(getAuthorization, payload);
-      let logged = false;
-      if (ds.success) {
-        const authorData = ds.data;
-        sessionStorage.set(APP_GLOBAL.CURRENT_USER, authorData[0]);
-        sessionStorage.set(APP_GLOBAL.TOKEN, authorData[0].accessToken);
-        sessionStorage.set(APP_GLOBAL.POLICY, authorData[0].authorityPolicy);
-        sessionStorage.set(APP_GLOBAL.AUTH, authorData[1] || []);
-        logged = true;
-      } else {
-        message.destroy();
-        message.error("访问无权限");
-        logged = false;
-      }
-      yield put({
-        type: "updateState",
-        payload: {
-          logged
-        }
-      });
-    },
     * redirectLogin({ payload }, { call, put, select }) {
-      const state = yield select(_ => _.global);
-      const { locationPathName, locationQuery } = state;
+      const global = yield select(_ => _.global);
+      const { locationPathName, locationQuery } = global;
       let location = locationPathName;
       if (location.indexOf("/user/login") !== -1) {
         location = locationQuery.from || "/";
@@ -70,15 +61,19 @@ export default {
         })
       });
     },
-    * login({ payload }, { call, put, select }) {
-      const state = yield select(_ => _.global);
-      const res = yield call(loginNew, payload);
+    * login({ payload }, { call, select }) {
+      const { locationQuery } = yield select(_ => _.global);
+      const res = yield call(login, payload);
+      const { success, data, message: msg } = res || {};
+      const { loginStatus, authorityPolicy, sessionId, } = data || {};
       message.destroy();
-      if (res&&res.success) {
+      clearUserInfo();
+      if (success && loginStatus === 'success') {
         message.success("登录成功");
-        sessionStorage.set(APP_GLOBAL.CURRENT_USER, res.data);
-        sessionStorage.set(CONST_GLOBAL.TOKEN_KEY, res.data.sessionId);
-        const {from} = state.locationQuery;
+        setCurrentUser(data);
+        setSessionId(sessionId);
+        setCurrentPolicy(authorityPolicy);
+        const { from } = locationQuery;
         if (from && from.indexOf("/user/login") === -1) {
           if (from === "/") {
             router.push("/dashboard");
@@ -89,11 +84,35 @@ export default {
         } else {
           router.push("/");
         }
-      }else{
-        message.success("登录失败！");
+      } else {
+        message.error(msg);
       }
-    }
-
+      return res;
+    },
+    * getUserFeatures(_, { call }) {
+      const user = getCurrentUser();
+      const result = yield call(getAuthorizedFeatures, user.userId);
+      if (result && result.success) {
+        setCurrentAuth(result.data);
+      }
+    },
+    * changeLocale({ payload }, { put, select }) {
+      const { locale } = payload;
+      const { locationQuery } = yield select(_ => _.global);
+      setCurrentLocale(locale);
+      yield put({
+        type: 'updateState',
+        payload: {
+          locale
+        }
+      });
+      router.replace({
+        pathname: "/user/login",
+        search: stringify({
+          from: locationQuery.from
+        })
+      });
+    },
   },
   reducers: {
     updateState(state, { payload }) {

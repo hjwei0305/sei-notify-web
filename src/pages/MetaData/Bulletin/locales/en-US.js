@@ -1,0 +1,17 @@
+export default {
+  "bulletin.editBulletin": "修改通知内容",
+  "bulletin.addBulletin": "新建通知内容",
+  "bulletin.subject": "标题",
+  "bulletin.subject.required": "",
+  "bulletin.institution": "发布机构",
+  "bulletin.institution.required": "",
+  "bulletin.effectiveDate": "有效期间",
+  "bulletin.effectiveDate.required": "",
+  "bulletin.content": "通告内容",
+  "bulletin.content.required": "",
+  "bulletin.targetType": "发布类型",
+  "bulletin.tagName": "类型值",
+  "bulletin.priority": "优先级",
+  "bulletin.releaseDate": "发布时间",
+  "bulletin.invalidDate": "截止日期",
+};

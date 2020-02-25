@@ -4,14 +4,14 @@ import { connect } from "dva";
 import cls from "classnames";
 import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
-import isEqual from "react-fast-compare";
-import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
+import { isEqual } from "lodash";
+import { ResizeMe, ExtTable, utils, ExtIcon } from 'seid'
 import { constants } from "@/utils";
+
 import FormModal from "./FormModal";
 import styles from "./index.less";
-import {getLocales} from "./locales/locales";
 
-const { UNIT_BTN_KEY } = constants;
+const { UNIT_BTN_KEY, NOTIFY_SERVER_PATH } = constants;
 const { authAction } = utils;
 
 
@@ -36,10 +36,7 @@ class Bulletin extends Component {
   }
 
   reloadData = _ => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: "bulletin/queryList"
-    });
+    this.tableRef && this.tableRef.remoteDataRefresh();
   };
 
   add = _ => {
@@ -118,13 +115,9 @@ class Bulletin extends Component {
     });
   };
 
-  render() {
-    const { bulletin, loading } = this.props;
-    let { delRowId, list } = this.state;
-    if(!list){
-      list = [];
-    }
-    const { showModal, rowData } = bulletin;
+  getExtTableProps = () => {
+    const { loading } = this.props;
+    let { delRowId, } = this.state;
     const columns = [
       {
         title: formatMessage({ id: "global.operation", defaultMessage: "操作" }),
@@ -169,54 +162,48 @@ class Bulletin extends Component {
         )
       },
       {
-        title: getLocales("subject","标题"),
+        title: formatMessage({ id: "bulletin.subject", defaultMessage: "标题" }),
         key: "subject",
         dataIndex: "subject",
         width: 120,
         required: true,
       },
       {
-        title: getLocales("targetType","发布类型"),
+        title: formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" }),
         key: "targetTypeRemark",
         dataIndex: "targetTypeRemark",
         required: true,
       },
       {
-        title: getLocales("tagName","类型值"),
+        title: formatMessage({ id: "bulletin.tagName", defaultMessage: "类型值" }),
         key: "tagName",
         dataIndex: "tagName",
         className: "tagName",
       },
       {
-        title: getLocales("priority","优先级"),
+        title: formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" }),
         key: "priorityRemark",
         dataIndex: "priorityRemark",
         required: true,
       },{
-        title: getLocales("releaseDate","发布时间"),
+        title: formatMessage({ id: "bulletin.releaseDate", defaultMessage: "发布时间" }),
         key: "releaseDate",
         dataIndex: "releaseDate",
         required: true,
         width: 180
       },{
-        title: getLocales("effectiveDate","生效时间"),
+        title: formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "生效时间" }),
         key: "effectiveDate",
         dataIndex: "effectiveDate",
         required: true,
       },{
-        title: getLocales("invalidData","截止日期"),
+        title: formatMessage({ id: "bulletin.invalidDate", defaultMessage: "截止日期" }),
         key: "invalidDate",
         dataIndex: "invalidDate",
         required: true,
       },
     ];
-    const formModalProps = {
-      save: this.save,
-      rowData,
-      showModal,
-      closeFormModal: this.closeFormModal,
-      saving: loading.effects["bulletin/save"]
-    };
+
     const toolBarProps = {
       left: (
         <Fragment>
@@ -238,23 +225,42 @@ class Bulletin extends Component {
         </Fragment>
       )
     };
+
+    return {
+      columns,
+      toolBar: toolBarProps,
+      bordered: false,
+      remotePaging: true,
+      store: {
+        type: 'POST',
+        url: `${NOTIFY_SERVER_PATH}/bulletin/findByPage`,
+      }
+    };
+  }
+
+  getFormModalProps = () => {
+    const { bulletin, loading } = this.props;
+    const { showModal, rowData,  } = bulletin;
+
+    return {
+      save: this.save,
+      rowData,
+      showModal,
+      closeFormModal: this.closeFormModal,
+      saving: loading.effects["bulletin/save"]
+    };
+  }
+
+  render() {
+    const { bulletin, } = this.props;
+    const { showModal, } = bulletin;
+
     return (
       <div className={cls(styles["container-box"])} >
-        {
-          loading.effects["bulletin/queryList"]
-            ? <PageLoader />
-            : null
-        }
-        <ExtTable
-          toolBar={toolBarProps}
-          rowKey={record => record.id}
-          columns={columns}
-          dataSource={list}
-        />
+        <ExtTable onTableRef={inst => this.tableRef = inst} {...this.getExtTableProps()} />
         {
           showModal
-            ? <FormModal {...formModalProps
-            } />
+            ? <FormModal {...this.getFormModalProps()} />
             : null
         }
       </div>

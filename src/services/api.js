@@ -1,52 +1,35 @@
-import  constants  from "@/utils/constants";
-import { utils } from 'seid';
+import { request, constants } from "@/utils";
 
-const {request} = utils;
-const {SERVER_PATH, BASIC_PATH}  = constants;
+const { AUTH_SERVER_PATH } = constants;
 
-/** 获取功能及访问权限*/
-export async function getAuthorization(params) {
-  const url = `${SERVER_PATH}/auth-service/userAuth/checkAuth`;
-  return request({
-    url,
-    method: "POST",
-    data: params,
-  });
-}
-//新的登录方法  BASIC_PATH
-export async function loginNew(params) {
-  const url = `${BASIC_PATH}/sei-auth/auth/login`;
-  params.data.id = "1234";
-  if (!Object.keys(params.data).includes("tenantCode")) {
-    params.data.tenantCode = "";
-  }
-  return request({
-    url,
-    method: "POST",
-    data: params.data,
-    headers:{needToken:false}
-  });
-}
 /** 登录*/
 export async function login(params) {
-  const url = `${SERVER_PATH}/auth-service/userAuth/login`;
-  params.data.appId = "1234";
-  if (!Object.keys(params.data).includes("tenantCode")) {
-    params.data.tenantCode = "";
-  }
+  const url = `${AUTH_SERVER_PATH}/auth/login`;
   return request({
     url,
     method: "POST",
-    params: params.data
+    headers: {
+      needToken: false,
+    },
+    data: params,
   });
 }
 
 /** 退出*/
-export async function logout() {
-  const url = `${SERVER_PATH}/auth-service/userAuth/logout`;
+export async function logout(params) {
+  const url = `${AUTH_SERVER_PATH}/auth/logout`;
   return request({
     url,
-    method: "POST"
+    method: "POST",
+    headers: {
+      needToken: false,
+    },
+    data: params,
   });
+}
+
+/** 获取当前用户有权限的功能项集合 */
+export async function getAuthorizedFeatures(userId) {
+  return request.get(`${AUTH_SERVER_PATH}/auth/getAuthorizedFeatures?userId=${userId}`);
 }
 

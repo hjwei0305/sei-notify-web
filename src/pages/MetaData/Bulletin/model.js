@@ -3,7 +3,7 @@ import { message } from "antd";
 import { formatMessage } from "umi-plugin-react/locale";
 import { utils } from 'seid';
 
-const { pathMatchRegexp, dvaModel } = utils;
+const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
 
 export default modelExtend(model, {
@@ -13,17 +13,6 @@ export default modelExtend(model, {
     list: [],
     rowData: null,
     showModal: false
-  },
-  subscriptions: {
-    setup({ dispatch, history }) {
-      history.listen(location => {
-        if (pathMatchRegexp("/metaData/bulletin", location.pathname)) {
-          dispatch({
-            type: "queryList"
-          });
-        }
-      });
-    }
   },
   effects: {
     * queryList({ payload }, { call, put }) {

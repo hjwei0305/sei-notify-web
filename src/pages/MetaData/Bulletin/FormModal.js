@@ -2,9 +2,8 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor} from "seid";
+import {RichEditor, ComboTree,} from "seid";
 import styles from "./FormMoal.less";
-import {getLocales} from "./locales/locales";
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -35,15 +34,31 @@ class FormModal extends PureComponent {
       let params = {};
       Object.assign(params, rowData || {});
       Object.assign(params, formData);
-      save(params);
+      console.log(formData, 'test');
+      // save(params);
     });
   };
+
+  getComboTreeProps = () => {
+    const { form, } = this.props;
+    return {
+      form,
+      name: 'institution',
+      store: {
+        url: `/sei-basic/organization/getUserAuthorizedTreeEntities`,
+      },
+      reader: {
+        name: 'name',
+      },
+      placeholder: '请选择发布机构',
+    };
+  }
   render() {
     const { form, rowData, closeFormModal, saving, showModal } = this.props;
     const { getFieldDecorator } = form;
     const title = rowData
-      ?  getLocales("editBulletin","修改通知内容")
-      :  getLocales("addBulletin","新建通知内容");
+      ?  formatMessage({ id: "bulletin.editBulletin", defaultMessage: "修改通知内容" })
+      :  formatMessage({ id: "bulletin.addBulletin", defaultMessage: "新建通知内容" });
     return (
       <Modal
         destroyOnClose
@@ -57,54 +72,59 @@ class FormModal extends PureComponent {
       >
         <Row>
             <Form {...formItemLayout} layout="horizontal">
-              <FormItem label={getLocales("subject","标题")}>
+              <FormItem label={formatMessage({ id: "bulletin.subject", defaultMessage: "标题" })}>
                 {getFieldDecorator("subject", {
                   initialValue: rowData ? rowData.subject : "",
                   rules: [{
                     required: true,
-                    message: getLocales("subject.required","标题不能为空")
+                    message: formatMessage({ id: "bulletin.subject.required", defaultMessage: "标题不能为空" })
                   }]
                 })(<Input />)}
               </FormItem>
-              <FormItem label={getLocales("institution","发布机构")}>
+              <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
                 {getFieldDecorator("institution", {
                   initialValue: rowData ? rowData.institution : "",
                   rules: [{
                     required: true,
-                    message: getLocales("institution.required","发布机构不能为空")
+                    message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
                   }]
-                })(<Input />)}
+                })(<ComboTree {...this.getComboTreeProps()}/>)}
               </FormItem>
-              <FormItem label={getLocales("priority","优先级")}>
+              <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
                 {getFieldDecorator("priority", {
                   initialValue: rowData ? rowData.priority : "",
                   rules: [{
                     required: true,
-                    message: getLocales("priority.required","优先级不能为空")
+                    message: formatMessage({ id: "bulletin.priority.required", defaultMessage: "优先级不能为空" })
                   }]
                 })(
-                  <RadioGroup>
-                    <Radio key="high">高</Radio>
-                    <Radio key="high1">紧急</Radio>
-                    <Radio key="high2">一般</Radio>
-                  </RadioGroup>
+                  <RadioGroup options={[{
+                    label: '高',
+                    value: 'high',
+                  },{
+                    label: '紧急',
+                    value: 'Urgent',
+                  },{
+                    label: '一般',
+                    value: 'General',
+                  }]} />
                 )}
               </FormItem>
-              <FormItem label={getLocales("effectiveDate","有效期间")}>
+              <FormItem label={formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "有效期间" })}>
                 {getFieldDecorator("effectiveDate", {
                   initialValue: rowData ? rowData.effectiveDate : null,
                   rules: [{
                     required: true,
-                    message: getLocales("effectiveDate.required","有效期间不能为空")
+                    message: formatMessage({ id: "bulletin.effectiveDate.required", defaultMessage: "有效期间不能为空" })
                   }]
-                })(<Input style={{width:"100%"}} />)}
+                })(<RangePicker style={{ width: '100%', }} />)}
               </FormItem>
-              <FormItem label={getLocales("content","通告内容")}>
+              <FormItem label={formatMessage({ id: "bulletin.content", defaultMessage: "通告内容" })}>
                 {getFieldDecorator("content", {
                   initialValue: rowData ? rowData.content : "",
                   rules: [{
                     required: true,
-                    message: getLocales("content.required","通告内容不能为空！")
+                    message: formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" })
                   }]
                 })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
               </FormItem>
