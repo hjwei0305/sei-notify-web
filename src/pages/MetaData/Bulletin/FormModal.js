@@ -2,8 +2,13 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor, ComboTree,} from "seid";
+import {RichEditor, ComboTree, ScrollBar, } from "seid";
+import moment from 'moment';
+import { constants, } from '@/utils';
 import styles from "./FormMoal.less";
+
+const { PRIORITY_OPT, TARGETTYPE_OPT, } = constants;
+
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -31,11 +36,16 @@ class FormModal extends PureComponent {
       if (err) {
         return;
       }
-      let params = {};
+      const [effectiveDate, invalidDate,] = formData.effectiveDateRange;
+      delete formData.effectiveDateRange;
+      let params = {
+        category: 'Bulletin',
+        effectiveDate: effectiveDate.format('YYYY-MM-DD'),
+        invalidDate: invalidDate.format('YYYY-MM-DD')
+      };
       Object.assign(params, rowData || {});
       Object.assign(params, formData);
-      console.log(formData, 'test');
-      // save(params);
+      save(params);
     });
   };
 
@@ -43,12 +53,14 @@ class FormModal extends PureComponent {
     const { form, } = this.props;
     return {
       form,
-      name: 'institution',
+      name: 'tagName',
+      field: ['tagCode'],
       store: {
         url: `/sei-basic/organization/getUserAuthorizedTreeEntities`,
       },
       reader: {
         name: 'name',
+        field: ['code'],
       },
       placeholder: '请选择发布机构',
     };
@@ -70,75 +82,94 @@ class FormModal extends PureComponent {
         title={title}
         wrapClassName={styles["order-box"]}
       >
-        <Row>
-            <Form {...formItemLayout} layout="horizontal">
-              <FormItem label={formatMessage({ id: "bulletin.subject", defaultMessage: "标题" })}>
-                {getFieldDecorator("subject", {
-                  initialValue: rowData ? rowData.subject : "",
-                  rules: [{
-                    required: true,
-                    message: formatMessage({ id: "bulletin.subject.required", defaultMessage: "标题不能为空" })
-                  }]
-                })(<Input />)}
-              </FormItem>
-              <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
-                {getFieldDecorator("institution", {
-                  initialValue: rowData ? rowData.institution : "",
-                  rules: [{
-                    required: true,
-                    message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
-                  }]
-                })(<ComboTree {...this.getComboTreeProps()}/>)}
-              </FormItem>
-              <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
-                {getFieldDecorator("priority", {
-                  initialValue: rowData ? rowData.priority : "",
-                  rules: [{
-                    required: true,
-                    message: formatMessage({ id: "bulletin.priority.required", defaultMessage: "优先级不能为空" })
-                  }]
-                })(
-                  <RadioGroup options={[{
-                    label: '高',
-                    value: 'high',
-                  },{
-                    label: '紧急',
-                    value: 'Urgent',
-                  },{
-                    label: '一般',
-                    value: 'General',
-                  }]} />
-                )}
-              </FormItem>
-              <FormItem label={formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "有效期间" })}>
-                {getFieldDecorator("effectiveDate", {
-                  initialValue: rowData ? rowData.effectiveDate : null,
-                  rules: [{
-                    required: true,
-                    message: formatMessage({ id: "bulletin.effectiveDate.required", defaultMessage: "有效期间不能为空" })
-                  }]
-                })(<RangePicker style={{ width: '100%', }} />)}
-              </FormItem>
-              <FormItem label={formatMessage({ id: "bulletin.content", defaultMessage: "通告内容" })}>
-                {getFieldDecorator("content", {
-                  initialValue: rowData ? rowData.content : "",
-                  rules: [{
-                    required: true,
-                    message: formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" })
-                  }]
-                })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
-              </FormItem>
-              <FormItem wrapperCol={buttonWrapper} className="btn-submit">
-                <Button
-                  type="primary"
-                  loading={saving}
-                  onClick={this.onFormSubmit}
-                >
-                  <FormattedMessage id="global.ok" defaultMessage="确定" />
-                </Button>
-              </FormItem>
-            </Form>
-        </Row>
+        <ScrollBar>
+          <Row style={{ width: '60%', margin: '0 auto' }}>
+              <Form {...formItemLayout} layout="horizontal">
+                <FormItem style={{ display: 'none'}}>
+                  {getFieldDecorator("id", {
+                    initialValue: rowData && rowData.id,
+                  })(<Input />)}
+                </FormItem>
+                <FormItem style={{ display: 'none'}}>
+                  {getFieldDecorator("contentId", {
+                    initialValue: rowData && rowData.contentId,
+                  })(<Input />)}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.subject", defaultMessage: "标题" })}>
+                  {getFieldDecorator("subject", {
+                    initialValue: rowData ? rowData.subject : "",
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.subject.required", defaultMessage: "标题不能为空" })
+                    }]
+                  })(<Input />)}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
+                  {getFieldDecorator("targetType", {
+                    initialValue: rowData ? rowData.targetType : "",
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.targetType.required", defaultMessage: "发布类型不能为空" })
+                    }]
+                  })(
+                    <RadioGroup options={TARGETTYPE_OPT} />
+                  )}
+                </FormItem>
+                <FormItem style={{ display: 'none'}}>
+                  {getFieldDecorator("tagCode", {
+                    initialValue: rowData ? rowData.tagCode : "",
+                  })(<Input />)}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
+                  {getFieldDecorator("tagName", {
+                    initialValue: rowData ? rowData.tagName : "",
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
+                    }]
+                  })(<ComboTree {...this.getComboTreeProps()}/>)}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
+                  {getFieldDecorator("priority", {
+                    initialValue: rowData ? rowData.priority : "",
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.priority.required", defaultMessage: "优先级不能为空" })
+                    }]
+                  })(
+                    <RadioGroup options={PRIORITY_OPT} />
+                  )}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "有效期间" })}>
+                  {getFieldDecorator("effectiveDateRange", {
+                    initialValue: rowData ? [moment(rowData.effectiveDate), moment(rowData.invalidDate)] : null,
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.effectiveDate.required", defaultMessage: "有效期间不能为空" })
+                    }]
+                  })(<RangePicker style={{ width: '100%', }} />)}
+                </FormItem>
+                <FormItem label={formatMessage({ id: "bulletin.content", defaultMessage: "通告内容" })}>
+                  {getFieldDecorator("content", {
+                    initialValue: rowData ? rowData.content : "",
+                    rules: [{
+                      required: true,
+                      message: formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" })
+                    }]
+                  })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
+                </FormItem>
+                <FormItem wrapperCol={buttonWrapper} className="btn-submit">
+                  <Button
+                    type="primary"
+                    loading={saving}
+                    onClick={this.onFormSubmit}
+                  >
+                    <FormattedMessage id="global.ok" defaultMessage="确定" />
+                  </Button>
+                </FormItem>
+              </Form>
+          </Row>
+        </ScrollBar>
       </Modal>
     );
   }

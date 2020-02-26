@@ -5,17 +5,16 @@ import cls from "classnames";
 import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import isEqual from "react-fast-compare";
-import { ResizeMe, ExtTable, PageLoader, utils, ExtIcon } from 'seid'
+import { ExtTable, PageLoader, utils, ExtIcon } from 'seid'
 import { constants } from "@/utils";
 import FormModal from "./FormModal";
 import styles from "./index.less";
 
-const { UNIT_BTN_KEY } = constants;
+const { BULLETIN_BTN_KEY } = constants;
 const { authAction } = utils;
 
 
 @withRouter
-@ResizeMe()
 @connect(({ notifyContent, loading }) => ({ notifyContent, loading }))
 class NotifyContent extends Component {
 
@@ -137,7 +136,7 @@ class NotifyContent extends Component {
             {
               authAction(
                 <ExtIcon
-                  key={UNIT_BTN_KEY.EDIT}
+                  key={BULLETIN_BTN_KEY.EDIT}
                   className="edit"
                   onClick={_ => this.edit(record)}
                   type="edit"
@@ -149,7 +148,7 @@ class NotifyContent extends Component {
             {
               authAction(
                 <Popconfirm
-                  key={UNIT_BTN_KEY.DELETE}
+                  key={BULLETIN_BTN_KEY.DELETE}
                   placement="topLeft"
                   ignore='true'
                   title={formatMessage({ id: "notifyContent.delete.confirm", defaultMessage: "确定要删除吗？提示：删除后不可恢复" })}
@@ -194,7 +193,7 @@ class NotifyContent extends Component {
           {
             authAction(
               <Button
-                key={UNIT_BTN_KEY.CREATE}
+                key={BULLETIN_BTN_KEY.ADD}
                 type="primary"
                 onClick={this.add}
                 ignore='true'

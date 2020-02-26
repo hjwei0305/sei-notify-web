@@ -15,13 +15,35 @@ const getBaseUrl = function () {
   return GATEWAY_CONTEXTPATH;
 }
 /** 计量单位功能项*/
-const UNIT_BTN_KEY = {
-  "CREATE": "BDM_AM_BTN_ASSET_UNIT_CREATE",
-  "EDIT": "BDM_AM_BTN_ASSET_UNIT_EDIT",
-  "DELETE": "BDM_AM_BTN_ASSET_UNIT_DELETE"
+const BULLETIN_BTN_KEY = {
+  "ADD": "ADD",
+  "EDIT": "EDIT",
+  "DELETE": "DELETE",
+  "VIEW": "VIEW",
+  "CANCEL": "CANCEL",
+  "RELEASE": "RELEASE",
 };
 
-export { CONST_GLOBAL, UNIT_BTN_KEY };
+export const PRIORITY_OPT = [{
+  label: '高',
+  value: 'High',
+},{
+  label: '紧急',
+  value: 'Urgent',
+},{
+  label: '一般',
+  value: 'General',
+}];
+
+export const TARGETTYPE_OPT = [{
+  label: '组织机构',
+  value: 'ORG',
+},{
+  label: '岗位',
+  value: 'POS',
+}]
+
+export { CONST_GLOBAL, BULLETIN_BTN_KEY };
 
 export const AUTH_SERVER_PATH = '/sei-auth';
 

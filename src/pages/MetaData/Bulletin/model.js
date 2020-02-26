@@ -1,4 +1,5 @@
-import { del, getList, save } from "./service";
+import { del, save } from "./service";
+import * as services from "./service";
 import { message } from "antd";
 import { formatMessage } from "umi-plugin-react/locale";
 import { utils } from 'seid';
@@ -12,23 +13,11 @@ export default modelExtend(model, {
   state: {
     list: [],
     rowData: null,
-    showModal: false
+    showModal: false,
+    showViewDetail: false,
   },
   effects: {
-    * queryList({ payload }, { call, put }) {
-      const ds = yield call(getList, payload);
-      if (ds.success) {
-        yield put({
-          type: "updateState",
-          payload: {
-            list: ds.data
-          }
-        });
-      } else {
-        throw ds;
-      }
-    },
-    * save({ payload, callback }, { call }) {
+    * save({ payload, }, { call }) {
       const re = yield call(save, payload);
       message.destroy();
       if (re.success) {
@@ -36,11 +25,10 @@ export default modelExtend(model, {
       } else {
         message.error(re.message);
       }
-      if (callback && callback instanceof Function) {
-        callback(re);
-      }
+
+      return re;
     },
-    * del({ payload, callback }, { call }) {
+    * del({ payload, }, { call }) {
       const re = yield call(del, payload);
       message.destroy();
       if (re.success) {
@@ -48,9 +36,19 @@ export default modelExtend(model, {
       } else {
         message.error(re.message);
       }
-      if (callback && callback instanceof Function) {
-        callback(re);
+
+      return re;
+    },
+    * bulletinOpt({ payload, }, { call }) {
+      const re = yield call(services[payload.optType], payload.ids);
+      message.destroy();
+      if (re.success) {
+        message.success(re.message);
+      } else {
+        message.error(re.message);
       }
+
+      return re;
     }
   }
 });

@@ -5,18 +5,17 @@ import cls from "classnames";
 import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { isEqual } from "lodash";
-import { ResizeMe, ExtTable, utils, ExtIcon } from 'seid'
+import { ExtTable, utils, ExtIcon } from 'seid'
 import { constants } from "@/utils";
-
 import FormModal from "./FormModal";
+import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
-const { UNIT_BTN_KEY, NOTIFY_SERVER_PATH } = constants;
+const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, TARGETTYPE_OPT } = constants;
 const { authAction } = utils;
 
 
 @withRouter
-@ResizeMe()
 @connect(({ bulletin, loading }) => ({ bulletin, loading }))
 class Bulletin extends Component {
 
@@ -39,70 +38,82 @@ class Bulletin extends Component {
     this.tableRef && this.tableRef.remoteDataRefresh();
   };
 
-  add = _ => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: "bulletin/updateState",
-      payload: {
-        showModal: true,
-        rowData: null
-      }
-    });
-  };
-
-  edit = rowData => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: "bulletin/updateState",
-      payload: {
-        showModal: true,
-        rowData: rowData
-      }
-    });
-  };
-
   save = data => {
     const { dispatch } = this.props;
     dispatch({
       type: "bulletin/save",
-      payload: {
-        data
-      },
-      callback: res => {
-        if (res.success) {
-          dispatch({
-            type: "bulletin/updateState",
-            payload: {
-              showModal: false
-            }
-          });
-          this.reloadData();
-        }
+      payload: data,
+    }).then(res => {
+      if (res.success) {
+        dispatch({
+          type: "bulletin/updateState",
+          payload: {
+            showModal: false
+          }
+        });
+        this.reloadData();
       }
     });
   };
 
-  del = record => {
-    const { dispatch } = this.props;
-    this.setState({
-      delRowId: record.id
-    }, _ => {
-      dispatch({
-        type: "bulletin/del",
-        payload: {
-          id: record.id
-        },
-        callback: res => {
+  handleEvent = (type, record) => {
+    const { dispatch, } = this.props;
+    switch(type) {
+      case 'add':
+      case 'edit':
+        dispatch({
+          type: "bulletin/updateState",
+          payload: {
+            showModal: true,
+            rowData: record,
+          }
+        });
+        break;
+      case 'del':
+        this.setState({
+          delRowId: record.id
+        }, _ => {
+          dispatch({
+            type: "bulletin/del",
+            payload: [record.id],
+          }).then(res => {
+            if (res.success) {
+              this.setState({
+                delRowId: null
+              });
+              this.reloadData();
+            }
+          });
+        });
+        break;
+      case 'release':
+      case 'cancel':
+        dispatch({
+          type: "bulletin/bulletinOpt",
+          payload: {
+            optType: type,
+            ids: [record.id],
+          },
+        }).then(res => {
           if (res.success) {
-            this.setState({
-              delRowId: null
-            });
             this.reloadData();
           }
-        }
-      });
-    });
-  };
+        });
+        break;
+      case 'view':
+        console.log('view');
+        dispatch({
+          type: 'bulletin/updateState',
+          payload: {
+            showViewDetail: true,
+            rowData: record,
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  }
 
   closeFormModal = _ => {
     const { dispatch } = this.props;
@@ -122,83 +133,132 @@ class Bulletin extends Component {
       {
         title: formatMessage({ id: "global.operation", defaultMessage: "操作" }),
         key: "operation",
-        width: 100,
+        width: 160,
         align: "center",
         dataIndex: "id",
         className: "action",
         required: true,
-        render: (text, record) => (
-          <span className={cls("action-box")}>
-            {
+        render: (text, record) => {
+          const optList = [authAction(
+            <ExtIcon
+              key={BULLETIN_BTN_KEY.VIEW}
+              className="read"
+              onClick={_ => this.handleEvent('view', record)}
+              type="read"
+              ignore='true'
+              tooltip={
+                { title: '查看' }
+              }
+              antd
+            />
+          )];
+
+          if (record.release) {
+            optList.unshift(authAction(
+              <ExtIcon
+                key={BULLETIN_BTN_KEY.CANCEL}
+                className="undo"
+                onClick={_ => this.handleEvent('cancel', record)}
+                type="undo"
+                ignore='true'
+                tooltip={
+                  { title: '撤销' }
+                }
+                antd
+              />
+            ));
+          } else {
+            optList.unshift(...[
               authAction(
                 <ExtIcon
-                  key={UNIT_BTN_KEY.EDIT}
-                  className="edit"
-                  onClick={_ => this.edit(record)}
-                  type="edit"
+                  key={BULLETIN_BTN_KEY.RELEASE}
+                  className="to-top"
+                  onClick={_ => this.handleEvent('release', record)}
+                  type="to-top"
                   ignore='true'
+                  tooltip={
+                    { title: '发布' }
+                  }
                   antd
                 />
-              )
-            }
-            {
+              ),
+              authAction(
+                <ExtIcon
+                  key={BULLETIN_BTN_KEY.EDIT}
+                  className="edit"
+                  onClick={_ => this.handleEvent('edit', record)}
+                  type="edit"
+                  ignore='true'
+                  tooltip={
+                    { title: '编辑' }
+                  }
+                  antd
+                />
+              ),
               authAction(
                 <Popconfirm
-                  key={UNIT_BTN_KEY.DELETE}
+                  key={BULLETIN_BTN_KEY.DELETE}
                   placement="topLeft"
                   ignore='true'
                   title={formatMessage({ id: "global.delete.confirm", defaultMessage: "确定要删除吗？提示：删除后不可恢复" })}
-                  onConfirm={_ => this.del(record)}
+                  onConfirm={_ => this.handleEvent('del', record)}
                 >
                   {
                     loading.effects["unit/del"] && delRowId === record.id
                       ? <ExtIcon className="del-loading" type="loading" antd />
-                      : <ExtIcon className="del" type="delete" antd />
+                      : <ExtIcon
+                          className="del"
+                          type="delete"
+                          antd
+                          tooltip={
+                            { title: '删除' }
+                          }
+                        />
                   }
                 </Popconfirm>
               )
-            }
-          </span>
-        )
+            ]);
+          }
+
+          return <span className={cls('action-box')}>{optList}</span>;
+        }
       },
       {
         title: formatMessage({ id: "bulletin.subject", defaultMessage: "标题" }),
-        key: "subject",
         dataIndex: "subject",
-        width: 120,
+        width: 220,
         required: true,
       },
       {
         title: formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" }),
-        key: "targetTypeRemark",
-        dataIndex: "targetTypeRemark",
+        dataIndex: "targetType",
         required: true,
+        render: (text) => {
+          const targetType = TARGETTYPE_OPT.filter(item => item.value === text);
+          return targetType[0].label;
+        }
       },
       {
         title: formatMessage({ id: "bulletin.tagName", defaultMessage: "类型值" }),
-        key: "tagName",
+        width: 220,
         dataIndex: "tagName",
         className: "tagName",
       },
       {
         title: formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" }),
-        key: "priorityRemark",
         dataIndex: "priorityRemark",
         required: true,
       },{
         title: formatMessage({ id: "bulletin.releaseDate", defaultMessage: "发布时间" }),
-        key: "releaseDate",
         dataIndex: "releaseDate",
         required: true,
         width: 180
       },{
         title: formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "生效时间" }),
-        key: "effectiveDate",
         dataIndex: "effectiveDate",
         required: true,
       },{
         title: formatMessage({ id: "bulletin.invalidDate", defaultMessage: "截止日期" }),
-        key: "invalidDate",
         dataIndex: "invalidDate",
         required: true,
       },
@@ -210,9 +270,9 @@ class Bulletin extends Component {
           {
             authAction(
               <Button
-                key={UNIT_BTN_KEY.CREATE}
+                key={BULLETIN_BTN_KEY.ADD}
                 type="primary"
-                onClick={this.add}
+                onClick={_ => this.handleEvent('add', null)}
                 ignore='true'
               >
                 <FormattedMessage id="global.add" defaultMessage="新建" />
@@ -251,19 +311,43 @@ class Bulletin extends Component {
     };
   }
 
+  getViewDetailProps = () => {
+    const { bulletin, dispatch, } = this.props;
+    const { rowData, } = bulletin;
+
+    return {
+      id: rowData && rowData.id,
+      onBack: () => {
+        dispatch({
+          type: 'bulletin/updateState',
+          payload: {
+            showViewDetail: false,
+            rowData: null,
+          }
+        });
+      }
+    };
+  }
+
   render() {
     const { bulletin, } = this.props;
-    const { showModal, } = bulletin;
-
+    const { showModal, showViewDetail, } = bulletin;
     return (
-      <div className={cls(styles["container-box"])} >
-        <ExtTable onTableRef={inst => this.tableRef = inst} {...this.getExtTableProps()} />
+      <React.Fragment>
+        <div className={cls(styles["container-box"])} style={{ display: showViewDetail ? 'none' : ''}}>
+          <ExtTable onTableRef={inst => this.tableRef = inst} {...this.getExtTableProps()} />
+          {
+            showModal
+              ? <FormModal {...this.getFormModalProps()} />
+              : null
+          }
+        </div>
         {
-          showModal
-            ? <FormModal {...this.getFormModalProps()} />
+          showViewDetail
+            ? <ViewDetail {...this.getViewDetailProps()} />
             : null
         }
-      </div>
+      </React.Fragment>
     );
   }
 }
