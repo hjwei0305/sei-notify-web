@@ -54,7 +54,7 @@ export default modelExtend(model, {
         throw ds;
       }
     },
-    * save({ payload, callback }, { call }) {
+    * save({ payload, }, { call }) {
       const re = yield call(save, payload);
       message.destroy();
       if (re.success) {
@@ -62,11 +62,10 @@ export default modelExtend(model, {
       } else {
         message.error(re.message);
       }
-      if (callback && callback instanceof Function) {
-        callback(re);
-      }
+
+      return re;
     },
-    * del({ payload, callback }, { call }) {
+    * del({ payload, }, { call }) {
       const re = yield call(del, payload);
       message.destroy();
       if (re.success) {
@@ -74,9 +73,8 @@ export default modelExtend(model, {
       } else {
         message.error(re.message);
       }
-      if (callback && callback instanceof Function) {
-        callback(re);
-      }
+
+      return re;
     }
   }
 });

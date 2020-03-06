@@ -15,6 +15,16 @@ export async function getList(params) {
   });
 }
 
+/** 获取列表*/
+export async function save(data) {
+  const url = `${NOTIFY_SERVER_PATH}/contentTemplate/save`;
+  return request({
+    url,
+    method: "POST",
+    data,
+  });
+}
+
 // 查找这一条消息通知
 export async function findOne(params) {
   const url = `${NOTIFY_SERVER_PATH}/contentTemplate/findOne`;
@@ -26,13 +36,9 @@ export async function findOne(params) {
 }
 /** 删除 */
 export async function del(params) {
-  const url = `${NOTIFY_SERVER_PATH}/contentTemplate/delete`;
+  const url = `${NOTIFY_SERVER_PATH}/contentTemplate/delete/${params.id}`;
   return request({
     url,
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    params:{id:params.id}
   });
 }

@@ -62,22 +62,20 @@ class NotifyContent extends Component {
   };
 
   save = data => {
-    const { dispatch } = this.props;
+    const { dispatch, loading } = this.props;
+    console.log(data, dispatch, loading);
     dispatch({
       type: "notifyContent/save",
-      payload: {
-        data
-      },
-      callback: res => {
-        if (res.success) {
-          dispatch({
-            type: "notifyContent/updateState",
-            payload: {
-              showModal: false
-            }
-          });
-          this.reloadData();
-        }
+      payload: data,
+    }).then(res => {
+      if (res.success) {
+        dispatch({
+          type: "notifyContent/updateState",
+          payload: {
+            showModal: false
+          }
+        });
+        this.reloadData();
       }
     });
   };
@@ -91,14 +89,13 @@ class NotifyContent extends Component {
         type: "notifyContent/del",
         payload: {
           id: record.id
-        },
-        callback: res => {
-          if (res.successful) {
-            this.setState({
-              delRowId: null
-            });
-            this.reloadData();
-          }
+        }
+      }).then(res => {
+        if (res.success) {
+          this.setState({
+            delRowId: null
+          });
+          this.reloadData();
         }
       });
     });
