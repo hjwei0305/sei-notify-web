@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor, ComboTree, ScrollBar, } from "seid";
+import {RichEditor, ComboTree, ScrollBar, } from "suid";
 import moment from 'moment';
 import { constants, } from '@/utils';
 import styles from "./FormMoal.less";
