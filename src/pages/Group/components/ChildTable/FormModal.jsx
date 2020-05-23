@@ -38,12 +38,13 @@ class FormModal extends PureComponent {
       name: 'userName',
       field: ['userId', 'userAccount'],
       searchProperties: ['userName', 'userAccount'],
+      remotePaging: true,
       store: {
         type: 'POST',
         autoLoad: false,
         url: `${NOTIFY_SERVER_PATH}/group/getUserAccounts`,
       },
-      rowKey: "userId",
+      rowKey: "userAccount",
       reader: {
         name: 'userName',
         field: ['userId', 'userAccount'],
