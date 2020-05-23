@@ -99,6 +99,7 @@ class FormModal extends PureComponent {
       columns,
       name: 'targetName',
       field: ['targetCode'],
+      searchProperties: ['code', 'name'],
       store: {
         autoLoad: false,
         url: `${NOTIFY_SERVER_PATH}/group/findAllUnfrozen`,

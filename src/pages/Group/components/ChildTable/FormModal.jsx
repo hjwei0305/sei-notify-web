@@ -37,6 +37,7 @@ class FormModal extends PureComponent {
       columns,
       name: 'userName',
       field: ['userId', 'userAccount'],
+      searchProperties: ['userName', 'userAccount'],
       store: {
         type: 'POST',
         autoLoad: false,
