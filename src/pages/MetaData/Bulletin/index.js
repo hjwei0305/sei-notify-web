@@ -241,8 +241,8 @@ class Bulletin extends Component {
       {
         title: formatMessage({ id: "bulletin.tagName", defaultMessage: "类型值" }),
         width: 220,
-        dataIndex: "tagName",
-        className: "tagName",
+        dataIndex: "targetName",
+        className: "targetName",
       },
       {
         title: formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" }),

@@ -39,8 +39,8 @@ export const TARGETTYPE_OPT = [{
   label: '组织机构',
   value: 'ORG',
 },{
-  label: '岗位',
-  value: 'POS',
+  label: '群组',
+  value: 'GROUP',
 }]
 
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };

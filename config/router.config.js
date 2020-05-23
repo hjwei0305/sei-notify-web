@@ -19,6 +19,7 @@ export default [
         routes: [
           { path: "/metaData/notifyContent", component: "./MetaData/NotifyContent" },
           { path: "/metaData/bulletin", component: "./MetaData/Bulletin" },
+          { path: "/metaData/group", component: "./Group" },
         ]
       },
       {

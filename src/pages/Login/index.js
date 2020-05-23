@@ -23,7 +23,10 @@ class LoginForm extends PureComponent {
         user.password = md5(user.password);
         dispatch({
           type: "global/login",
-          payload: user,
+          payload: {
+            ...user,
+            reqId: '12312',
+          },
         }).then(res => {
           const { success, data } = res || {};
           if (success) {

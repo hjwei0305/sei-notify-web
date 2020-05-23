@@ -2,12 +2,13 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor, ComboTree, ScrollBar, } from "suid";
+import {RichEditor, ComboTree, ScrollBar, ComboGrid, } from "suid";
+
 import moment from 'moment';
 import { constants, } from '@/utils';
 import styles from "./FormMoal.less";
 
-const { PRIORITY_OPT, TARGETTYPE_OPT, } = constants;
+const { PRIORITY_OPT, TARGETTYPE_OPT, NOTIFY_SERVER_PATH, } = constants;
 
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
@@ -26,8 +27,11 @@ const buttonWrapper = { span: 20, offset: 4 };
 class FormModal extends PureComponent {
   constructor(props) {
     super(props);
+    const { rowData} = props;
     this.state = {
-      isPreview: false
+      isPreview: false,
+      targetType: rowData ? rowData.targetType : TARGETTYPE_OPT[0].value,
+
     };
   };
   onFormSubmit = _ => {
@@ -39,7 +43,7 @@ class FormModal extends PureComponent {
       const [effectiveDate, invalidDate,] = formData.effectiveDateRange;
       delete formData.effectiveDateRange;
       let params = {
-        category: 'Bulletin',
+        category: 'SEI_BULLETIN',
         effectiveDate: effectiveDate.format('YYYY-MM-DD'),
         invalidDate: invalidDate.format('YYYY-MM-DD')
       };
@@ -49,12 +53,25 @@ class FormModal extends PureComponent {
     });
   };
 
+  handleChangeTarget = (e) => {
+    const { form } = this.props;
+
+    this.setState({
+      targetType: e.target.value,
+    }, () => {
+      form.setFieldsValue({
+        targetCode: '',
+        targetName: '',
+      });
+    });
+  }
+
   getComboTreeProps = () => {
     const { form, } = this.props;
     return {
       form,
-      name: 'tagName',
-      field: ['tagCode'],
+      name: 'targetName',
+      field: ['targetCode'],
       store: {
         url: `/sei-basic/organization/getUserAuthorizedTreeEntities`,
       },
@@ -65,9 +82,40 @@ class FormModal extends PureComponent {
       placeholder: '请选择发布机构',
     };
   }
+
+  getComboGridProps = () => {
+    const { form } = this.props;
+    const columns = [{
+      title: '群组代码',
+      width: 80,
+      dataIndex: 'code',
+    }, {
+      title: '群组名称',
+      width: 80,
+      dataIndex: 'name',
+    }];
+    return {
+      form,
+      columns,
+      name: 'targetName',
+      field: ['targetCode'],
+      store: {
+        autoLoad: false,
+        url: `${NOTIFY_SERVER_PATH}/group/findAllUnfrozen`,
+      },
+      rowKey: "id",
+      reader: {
+        name: 'name',
+        field: ['code',],
+      },
+      placeholder: '请选择发布群组',
+    };
+  }
+
   render() {
     const { form, rowData, closeFormModal, saving, showModal } = this.props;
     const { getFieldDecorator } = form;
+    const { targetType, } = this.state;
     const title = rowData
       ?  formatMessage({ id: "bulletin.editBulletin", defaultMessage: "修改通知内容" })
       :  formatMessage({ id: "bulletin.addBulletin", defaultMessage: "新建通知内容" });
@@ -106,29 +154,41 @@ class FormModal extends PureComponent {
                 </FormItem>
                 <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
                   {getFieldDecorator("targetType", {
-                    initialValue: rowData ? rowData.targetType : "",
+                    initialValue: targetType,
                     rules: [{
                       required: true,
                       message: formatMessage({ id: "bulletin.targetType.required", defaultMessage: "发布类型不能为空" })
                     }]
                   })(
-                    <RadioGroup options={TARGETTYPE_OPT} />
+                    <RadioGroup onChange={this.handleChangeTarget} options={TARGETTYPE_OPT} />
                   )}
                 </FormItem>
                 <FormItem style={{ display: 'none'}}>
-                  {getFieldDecorator("tagCode", {
-                    initialValue: rowData ? rowData.tagCode : "",
+                  {getFieldDecorator("targetCode", {
+                    initialValue: rowData ? rowData.targetCode : "",
                   })(<Input />)}
                 </FormItem>
-                <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
-                  {getFieldDecorator("tagName", {
-                    initialValue: rowData ? rowData.tagName : "",
-                    rules: [{
-                      required: true,
-                      message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
-                    }]
-                  })(<ComboTree {...this.getComboTreeProps()}/>)}
-                </FormItem>
+                {targetType === TARGETTYPE_OPT[0].value ? (
+                  <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
+                    {getFieldDecorator("targetName", {
+                      initialValue: rowData ? rowData.targetName : "",
+                      rules: [{
+                        required: true,
+                        message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
+                      }]
+                    })(<ComboTree {...this.getComboTreeProps()}/>)}
+                  </FormItem>
+                ) : (
+                  <FormItem label="发布群组">
+                    {getFieldDecorator("targetName", {
+                      initialValue: rowData ? rowData.targetName : "",
+                      rules: [{
+                        required: true,
+                        message: "发布群组不能为空"
+                      }]
+                    })(<ComboGrid {...this.getComboGridProps()}/>)}
+                  </FormItem>
+                )}
                 <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
                   {getFieldDecorator("priority", {
                     initialValue: rowData ? rowData.priority : "",
