@@ -76,8 +76,8 @@ class ViewDetail extends React.Component {
             { detail ? (
                 <React.Fragment>
                   <h1 style={{ padding: 20, textAlign: 'center', fontSize: 20 }}>{detail.subject}</h1>
-                  <h5 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h5>
-                  <h5 style={{ display: 'inline-block' }}>优先级：{`${detail.priorityRemark}`}</h5>
+                  <h4 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h4>
+                  <h4 style={{ display: 'inline-block' }}>优先级：{`${detail.priorityRemark}`}</h4>
                   <Divider style={{
                     marginTop: 5,
                   }}/>

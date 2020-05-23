@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor, ComboTree, ScrollBar, ComboGrid, } from "suid";
+import {RichEditor, ComboTree, ScrollBar, ComboGrid, Attachment, } from "suid";
 
 import moment from 'moment';
 import { constants, } from '@/utils';
@@ -45,7 +45,8 @@ class FormModal extends PureComponent {
       let params = {
         category: 'SEI_BULLETIN',
         effectiveDate: effectiveDate.format('YYYY-MM-DD'),
-        invalidDate: invalidDate.format('YYYY-MM-DD')
+        invalidDate: invalidDate.format('YYYY-MM-DD'),
+        docIds: formData.Attachments ? formData.Attachments.map(attach => attach.id) : [],
       };
       Object.assign(params, rowData || {});
       Object.assign(params, formData);
@@ -218,6 +219,17 @@ class FormModal extends PureComponent {
                       message: formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" })
                     }]
                   })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
+                </FormItem>
+                <FormItem label="附件">
+                {getFieldDecorator("Attachments", {
+                  })(
+                    <Attachment
+                    entityId = {rowData && rowData.id}
+                    serviceHost='/api-gateway/edm-service'
+                  >
+
+                  </Attachment>
+                  )}
                 </FormItem>
                 <FormItem wrapperCol={buttonWrapper} className="btn-submit">
                   <Button
