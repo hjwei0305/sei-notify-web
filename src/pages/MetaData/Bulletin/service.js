@@ -25,7 +25,7 @@ export async function del(data) {
 
 /** 查看消息 */
 export async function view(ids, category) {
-  const url = `${NOTIFY_SERVER_PATH}/message/detail?id=${ids[0]}&category=${category}`;
+  const url = `${NOTIFY_SERVER_PATH}/message/detail?msgId=${ids[0]}&category=${category}`;
   return request({
     url,
     method: "GET",
