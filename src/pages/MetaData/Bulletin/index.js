@@ -11,7 +11,7 @@ import FormModal from "./FormModal";
 import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
-const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, TARGETTYPE_OPT, MSG_CATEGORY } = constants;
+const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, MSG_CATEGORY } = constants;
 const { authAction } = utils;
 
 

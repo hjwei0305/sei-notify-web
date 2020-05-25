@@ -194,16 +194,26 @@ class userBulletin extends Component {
         </Fragment>
       )
     };
-    const cascadeParams = {};
+    const cascadeParams = {
+      filters: [],
+    };
+    cascadeParams.filters.push(
+      {
+        "fieldName": "category",
+        "value": category,
+        "operator": "EQ",
+        "fieldType": "String"
+      }
+    );
     if(isRead) {
-      cascadeParams.filters = [
+      cascadeParams.filters.push(
         {
           "fieldName": "read",
           "value": '1',
           "operator": isRead === '1' ? "EQ" : "NU",
           "fieldType": "bool"
         }
-      ];
+      );
     }
     return {
       columns,
@@ -214,7 +224,7 @@ class userBulletin extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: `${NOTIFY_SERVER_PATH}/message/findMessageByPage?category=${category}`,
+        url: `${NOTIFY_SERVER_PATH}/message/findMessageByPage`,
       }
     };
   }
