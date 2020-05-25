@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker } from 'antd';
-import {RichEditor, ComboTree, ScrollBar, ComboGrid, Attachment, } from "suid";
+import {RichEditor, ScrollBar, ComboGrid, Attachment, } from "suid";
 
 import moment from 'moment';
 import { constants, } from '@/utils';
@@ -27,13 +27,15 @@ const buttonWrapper = { span: 20, offset: 4 };
 class FormModal extends PureComponent {
   constructor(props) {
     super(props);
-    const { rowData} = props;
+    // const { rowData} = props;
     this.state = {
       isPreview: false,
-      targetType: rowData ? rowData.targetType : TARGETTYPE_OPT[0].value,
+      // targetType: rowData ? rowData.targetType : TARGETTYPE_OPT[1].value,
+      targetType: TARGETTYPE_OPT[1].value,
 
     };
   };
+
   onFormSubmit = _ => {
     const { form, save, rowData } = this.props;
     form.validateFields((err, formData) => {
@@ -157,7 +159,14 @@ class FormModal extends PureComponent {
                     }]
                   })(<Input />)}
                 </FormItem>
-                <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
+                <FormItem style={{ display: 'none' }}>
+                  {getFieldDecorator("targetType", {
+                    initialValue: targetType,
+                  })(
+                    <Input />
+                  )}
+                </FormItem>
+                {/* <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
                   {getFieldDecorator("targetType", {
                     initialValue: targetType,
                     rules: [{
@@ -167,13 +176,13 @@ class FormModal extends PureComponent {
                   })(
                     <RadioGroup onChange={this.handleChangeTarget} options={TARGETTYPE_OPT} />
                   )}
-                </FormItem>
-                <FormItem style={{ display: 'none'}}>
+                </FormItem> */}
+                <FormItem style={{ display: 'none' }}>
                   {getFieldDecorator("targetCode", {
                     initialValue: rowData ? rowData.targetCode : "",
                   })(<Input />)}
                 </FormItem>
-                {targetType === TARGETTYPE_OPT[0].value ? (
+                {/* {targetType === TARGETTYPE_OPT[0].value ? (
                   <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
                     {getFieldDecorator("targetName", {
                       initialValue: rowData ? rowData.targetName : "",
@@ -183,7 +192,7 @@ class FormModal extends PureComponent {
                       }]
                     })(<ComboTree {...this.getComboTreeProps()}/>)}
                   </FormItem>
-                ) : (
+                ) : ( */}
                   <FormItem label="发布群组">
                     {getFieldDecorator("targetName", {
                       initialValue: rowData ? rowData.targetName : "",
@@ -193,7 +202,7 @@ class FormModal extends PureComponent {
                       }]
                     })(<ComboGrid {...this.getComboGridProps()}/>)}
                   </FormItem>
-                )}
+                {/* )} */}
                 <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
                   {getFieldDecorator("priority", {
                     initialValue: rowData ? rowData.priority : "",
