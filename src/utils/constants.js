@@ -43,6 +43,15 @@ export const TARGETTYPE_OPT = [{
   value: 'GROUP',
 }]
 
+// SMS,SEI_BULLETIN,SEI_MESSAGE,SEI_REMIND,DingTalk,WeChat
+export const MSG_CATEGORY = [{
+  label: '通告',
+  value: 'SEI_BULLETIN',
+}, {
+  label: '提醒',
+  value: 'SEI_REMIND',
+}]
+
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };
 
 export const AUTH_SERVER_PATH = '/sei-auth';

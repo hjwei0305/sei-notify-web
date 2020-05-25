@@ -11,7 +11,7 @@ import FormModal from "./FormModal";
 import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
-const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, TARGETTYPE_OPT } = constants;
+const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, TARGETTYPE_OPT, MSG_CATEGORY } = constants;
 const { authAction } = utils;
 
 
@@ -317,6 +317,7 @@ class Bulletin extends Component {
 
     return {
       id: rowData && rowData.id,
+      msgCategory: MSG_CATEGORY[0].value,
       onBack: () => {
         dispatch({
           type: 'bulletin/updateState',

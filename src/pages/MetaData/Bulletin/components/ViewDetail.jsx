@@ -10,12 +10,13 @@ class ViewDetail extends React.Component {
   }
 
   componentDidMount() {
-    const { id, dispatch, } = this.props;
+    const { id, dispatch, msgCategory } = this.props;
     if (id) {
 
       dispatch({
         type: 'bulletin/bulletinOpt',
         payload: {
+          msgCategory,
           ids: [id],
           optType: 'view',
         },
@@ -41,7 +42,7 @@ class ViewDetail extends React.Component {
     const { detail, } = this.state;
     const title = detail ? `【${detail.subject}】` : '';
     return {
-      title: `${title}通告详情`,
+      title: `${title}消息明细`,
       bordered: false,
       extra:(
         <React.Fragment>
@@ -76,7 +77,7 @@ class ViewDetail extends React.Component {
             { detail ? (
                 <React.Fragment>
                   <h1 style={{ padding: 20, textAlign: 'center', fontSize: 20 }}>{detail.subject}</h1>
-                  <h4 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h4>
+                  {/* <h4 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h4> */}
                   <h4 style={{ display: 'inline-block' }}>优先级：{`${detail.priorityRemark}`}</h4>
                   <Divider style={{
                     marginTop: 5,

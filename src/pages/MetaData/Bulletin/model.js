@@ -40,7 +40,7 @@ export default modelExtend(model, {
       return re;
     },
     * bulletinOpt({ payload, }, { call }) {
-      const re = yield call(services[payload.optType], payload.ids);
+      const re = yield call(services[payload.optType], payload.ids, payload.msgCategory);
       message.destroy();
       if (!re.success) {
         message.error(re.message);

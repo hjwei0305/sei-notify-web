@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import cls from "classnames";
 import withRouter from "umi/withRouter";
-import { Radio, Button, Tag } from 'antd';
+import { Radio, Button, Tag, Select } from 'antd';
 import { connect } from "dva";
 import { ExtTable, ExtIcon } from 'suid'
 import { formatMessage, } from "umi-plugin-react/locale";
@@ -9,7 +9,7 @@ import { constants } from "@/utils";
 import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
-const { NOTIFY_SERVER_PATH, TARGETTYPE_OPT, } = constants;
+const { NOTIFY_SERVER_PATH, TARGETTYPE_OPT, MSG_CATEGORY, } = constants;
 
 @withRouter
 @connect(({ bulletin, loading }) => ({ bulletin, loading }))
@@ -17,6 +17,7 @@ class userBulletin extends Component {
 
   state = {
     isRead: '0',
+    category: MSG_CATEGORY[0].value,
   }
 
   handleChange = (e) => {
@@ -28,6 +29,14 @@ class userBulletin extends Component {
 
   reloadData = _ => {
     this.tableRef && this.tableRef.remoteDataRefresh();
+  }
+
+  handleCategoryChange = (category) => {
+    this.setState({
+      category,
+    }, () => {
+      this.reloadData();
+    });
   }
 
   handleEvent = (type, record) => {
@@ -49,10 +58,13 @@ class userBulletin extends Component {
 
   getViewDetailProps = () => {
     const { bulletin, dispatch, } = this.props;
+    const { category: msgCategory, } = this.state;
     const { rowData, } = bulletin;
+    const { id,} = rowData || {};
 
     return {
-      id: rowData && rowData.id,
+      id,
+      msgCategory,
       onBack: () => {
         dispatch({
           type: 'bulletin/updateState',
@@ -66,7 +78,7 @@ class userBulletin extends Component {
   }
 
   getExtTableProps = () => {
-    const { isRead, } = this.state;
+    const { isRead, category } = this.state;
     const columns = [
       {
         title: formatMessage({ id: "global.operation", defaultMessage: "操作" }),
@@ -104,7 +116,10 @@ class userBulletin extends Component {
         required: true,
         render: (text) => {
           const targetType = TARGETTYPE_OPT.filter(item => item.value === text);
-          return targetType[0].label;
+          if (targetType.length) {
+            return targetType[0].label;
+          }
+          return text;
         }
       },
       {
@@ -122,15 +137,17 @@ class userBulletin extends Component {
         dataIndex: "releaseDate",
         required: true,
         width: 180
-      },{
-        title: formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "生效时间" }),
-        dataIndex: "effectiveDate",
-        required: true,
-      },{
-        title: formatMessage({ id: "bulletin.invalidDate", defaultMessage: "截止日期" }),
-        dataIndex: "invalidDate",
-        required: true,
-      },{
+      },
+      // {
+      //   title: formatMessage({ id: "bulletin.effectiveDate", defaultMessage: "生效时间" }),
+      //   dataIndex: "effectiveDate",
+      //   required: true,
+      // },{
+      //   title: formatMessage({ id: "bulletin.invalidDate", defaultMessage: "截止日期" }),
+      //   dataIndex: "invalidDate",
+      //   required: true,
+      // },
+      {
         title: '是否已读',
         width: 120,
         dataIndex: 'read',
@@ -147,11 +164,22 @@ class userBulletin extends Component {
     const toolBarProps = {
       left: (
         <Fragment>
+            <Select
+              placeholder="消息类型"
+              value={category}
+              style={{
+                marginRight: 10,
+              }}
+              onChange={this.handleCategoryChange}
+            >
+              {MSG_CATEGORY.map(item => <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>)}
+            </Select>
             <Radio.Group defaultValue="0" onChange={this.handleChange}>
               <Radio.Button value="">全部</Radio.Button>
               <Radio.Button value="1">已读</Radio.Button>
               <Radio.Button value="0">未读</Radio.Button>
             </Radio.Group>
+
             <Button
               type='primary'
               style={{
@@ -186,7 +214,7 @@ class userBulletin extends Component {
       remotePaging: true,
       store: {
         type: 'POST',
-        url: `${NOTIFY_SERVER_PATH}/bulletinMsg/findBulletinByPage4User`,
+        url: `${NOTIFY_SERVER_PATH}/message/findMessageByPage?category=${category}`,
       }
     };
   }
