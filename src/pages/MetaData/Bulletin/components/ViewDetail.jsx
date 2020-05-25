@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect, } from 'dva';
+import { Attachment, } from 'suid';
 import { Skeleton, Divider, Empty, Row, Col, Button, Card, } from 'antd';
 
 @connect(({ bulletin, loading, }) => ({ bulletin, loading, }))
@@ -40,11 +41,13 @@ class ViewDetail extends React.Component {
 
   getCardProps = () => {
     const { detail, } = this.state;
-    const title = detail ? `【${detail.subject}】` : '';
+    const { showHead, } = this.props;
+    let title = detail ? `【${detail.subject}】消息明细` : '';
+
     return {
-      title: `${title}消息明细`,
+      title: showHead ? title : null,
       bordered: false,
-      extra:(
+      extra: showHead ? (
         <React.Fragment>
           <Button type="primary" onClick={this.handleBack}>返回</Button>
 {/*          { type === 'user' ? (
@@ -63,7 +66,7 @@ class ViewDetail extends React.Component {
             </Button>
           ) : (null) }*/}
         </React.Fragment>
-      ),
+      ): null,
     };
   }
 
@@ -89,6 +92,20 @@ class ViewDetail extends React.Component {
                   }}>
                     <div dangerouslySetInnerHTML={{__html: detail.content}}></div>
                   </div>
+                  <Divider style={{
+                  }} dashed={true}>附件</Divider>
+                  <Attachment
+                    allowUpload={false}
+                    allowDelete={false}
+                    // viewType="card"
+                    serviceHost='/api-gateway/edm-service'
+                    entityId = {detail.id}
+                    onChange = { (docIds) => {
+                      this.setState({
+                        attachNum: docIds.length
+                      });
+                    } }
+                  />
                   <Row type="flex" style={{
                     justifyContent: 'flex-end',
                   }}>

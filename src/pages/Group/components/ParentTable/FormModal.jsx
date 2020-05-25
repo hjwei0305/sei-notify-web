@@ -1,8 +1,11 @@
 import React, { PureComponent } from "react";
-import { Form, Input, InputNumber, Checkbox, } from "antd";
+import { Form, Input, InputNumber, Checkbox, Select, } from "antd";
 import { ExtModal, ScrollBar, } from 'suid';
+import { constants, } from '@/utils';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
+const { GROUP_CATEGORY, } = constants;
 
 @Form.create()
 class FormModal extends PureComponent {
@@ -72,10 +75,17 @@ class FormModal extends PureComponent {
                   }]
                 })(<Input />)}
               </FormItem>
+              <FormItem label="分类">
+                {getFieldDecorator("category", {
+                  initialValue: rank,
+                })(<Select style={{ width: '100%'}}>
+                  {GROUP_CATEGORY.map(item => <Option key={item.value} value={item.value}>{item.label}</Option>)}
+                </Select>)}
+              </FormItem>
               <FormItem label="排序">
                 {getFieldDecorator("rank", {
                   initialValue: rank,
-                })(<InputNumber />)}
+                })(<InputNumber style={{ width: '100%'}} />)}
               </FormItem>
               <FormItem label="冻结">
                 {getFieldDecorator("frozen", {

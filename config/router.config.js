@@ -21,6 +21,14 @@ export default [
           { path: "/metaData/bulletin", component: "./MetaData/Bulletin" },
           { path: "/metaData/group", component: "./Group" },
           { path: "/metaData/userBulletin", component: "./MetaData/Bulletin/userBulletin" },
+          { path: "/message/msgDetail", component: "./MetaData/Bulletin/msgDetail" },
+        ]
+      },
+      {
+        path: "/message",
+        name: "消息",
+        routes: [
+          { path: "/message/msgDetail", component: "./MetaData/Bulletin/msgDetail" },
         ]
       },
       {

@@ -52,6 +52,20 @@ export const MSG_CATEGORY = [{
   value: 'SEI_REMIND',
 }]
 
+export const GROUP_CATEGORY = [{
+  label: '用户',
+  value: 'USER',
+}, {
+  label: '组织机构',
+  value: 'ORG',
+}, {
+  label: '岗位',
+  value: 'POS',
+}, {
+  label: '角色',
+  value: 'ROLE',
+}]
+
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };
 
 export const AUTH_SERVER_PATH = '/sei-auth';

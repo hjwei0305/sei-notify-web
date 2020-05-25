@@ -42,14 +42,17 @@ class FormModal extends PureComponent {
       }
       const [effectiveDate, invalidDate,] = formData.effectiveDateRange;
       delete formData.effectiveDateRange;
+      let tempFiles = formData.Attachments;
+      if (!tempFiles && this.attachmentRef) {
+        tempFiles = this.attachmentRef.getAttachmentStatus().fileList;
+      }
       let params = {
         category: 'SEI_BULLETIN',
         effectiveDate: effectiveDate.format('YYYY-MM-DD'),
         invalidDate: invalidDate.format('YYYY-MM-DD'),
-        docIds: formData.Attachments ? formData.Attachments.map(attach => attach.id) : [],
+        docIds: tempFiles ? tempFiles.map(attach => attach.id) : [],
       };
-      Object.assign(params, rowData || {});
-      Object.assign(params, formData);
+      params = Object.assign({},rowData || {}, params, formData);
       save(params);
     });
   };
@@ -224,6 +227,7 @@ class FormModal extends PureComponent {
                 {getFieldDecorator("Attachments", {
                   })(
                     <Attachment
+                    onAttachmentRef={inst => this.attachmentRef = inst}
                     entityId = {rowData && rowData.id}
                     serviceHost='/api-gateway/edm-service'
                   >
