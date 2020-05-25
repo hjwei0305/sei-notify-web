@@ -35,7 +35,7 @@ class FormModal extends PureComponent {
       }
     };
     const title = rowData ? '编辑' : '新建';
-    const { id, code, name, rank=0, frozen=false, } = rowData || {};
+    const { id, code, name, rank=0, frozen=false, category='' } = rowData || {};
 
     return (
       <ExtModal
@@ -57,7 +57,7 @@ class FormModal extends PureComponent {
                   initialValue: id,
                 })(<Input />)}
               </FormItem>
-              <FormItem label="代码">
+              {/* <FormItem label="代码">
                 {getFieldDecorator("code", {
                   initialValue: code,
                   rules: [{
@@ -65,7 +65,7 @@ class FormModal extends PureComponent {
                     message: "代码不能为空",
                   }]
                 })(<Input disabled={!!rowData} />)}
-              </FormItem>
+              </FormItem> */}
               <FormItem label="名称">
                 {getFieldDecorator("name", {
                   initialValue: name,
@@ -77,8 +77,12 @@ class FormModal extends PureComponent {
               </FormItem>
               <FormItem label="分类">
                 {getFieldDecorator("category", {
-                  initialValue: rank,
-                })(<Select style={{ width: '100%'}}>
+                  initialValue: category,
+                  rules: [{
+                    required: true,
+                    message: "分类不能为空"
+                  }]
+                })(<Select style={{ width: '100%'}} disabled={!!rowData}>
                   {GROUP_CATEGORY.map(item => <Option key={item.value} value={item.value}>{item.label}</Option>)}
                 </Select>)}
               </FormItem>

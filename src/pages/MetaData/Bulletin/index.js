@@ -153,7 +153,7 @@ class Bulletin extends Component {
             />
           )];
 
-          if (record.release) {
+          if (record.publish) {
             optList.unshift(authAction(
               <ExtIcon
                 key={BULLETIN_BTN_KEY.CANCEL}
@@ -230,16 +230,7 @@ class Bulletin extends Component {
         required: true,
       },
       {
-        title: formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" }),
-        dataIndex: "targetType",
-        required: true,
-        render: (text) => {
-          const targetType = TARGETTYPE_OPT.filter(item => item.value === text);
-          return targetType[0].label;
-        }
-      },
-      {
-        title: formatMessage({ id: "bulletin.tagName", defaultMessage: "类型值" }),
+        title: '群组',
         width: 220,
         dataIndex: "targetName",
         className: "targetName",
@@ -250,7 +241,7 @@ class Bulletin extends Component {
         required: true,
       },{
         title: formatMessage({ id: "bulletin.releaseDate", defaultMessage: "发布时间" }),
-        dataIndex: "releaseDate",
+        dataIndex: "publishDate",
         required: true,
         width: 180
       },{

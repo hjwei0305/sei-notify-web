@@ -92,9 +92,9 @@ class FormModal extends PureComponent {
   getComboGridProps = () => {
     const { form } = this.props;
     const columns = [{
-      title: '群组代码',
+      title: '群组类型',
       width: 80,
-      dataIndex: 'code',
+      dataIndex: 'groupCategoryRemark',
     }, {
       title: '群组名称',
       width: 80,
@@ -104,7 +104,7 @@ class FormModal extends PureComponent {
       form,
       columns,
       name: 'targetName',
-      field: ['targetCode'],
+      field: ['targetValue'],
       searchProperties: ['code', 'name'],
       store: {
         autoLoad: false,
@@ -113,7 +113,7 @@ class FormModal extends PureComponent {
       rowKey: "id",
       reader: {
         name: 'name',
-        field: ['code',],
+        field: ['id',],
       },
       placeholder: '请选择发布群组',
     };
@@ -155,7 +155,7 @@ class FormModal extends PureComponent {
                     initialValue: rowData ? rowData.subject : "",
                     rules: [{
                       required: true,
-                      message: formatMessage({ id: "bulletin.subject.required", defaultMessage: "标题不能为空" })
+                      message: "标题不能为空",
                     }]
                   })(<Input />)}
                 </FormItem>
@@ -178,8 +178,8 @@ class FormModal extends PureComponent {
                   )}
                 </FormItem> */}
                 <FormItem style={{ display: 'none' }}>
-                  {getFieldDecorator("targetCode", {
-                    initialValue: rowData ? rowData.targetCode : "",
+                  {getFieldDecorator("targetValue", {
+                    initialValue: rowData ? rowData.targetValue : "",
                   })(<Input />)}
                 </FormItem>
                 {/* {targetType === TARGETTYPE_OPT[0].value ? (

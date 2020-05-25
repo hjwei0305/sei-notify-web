@@ -191,18 +191,24 @@ class CascadeTableMaster extends Component {
           );
         }
       },
-      {
-        title: "代码",
-        dataIndex: "code",
-        width: 120,
-        required: true,
-      },
+      // {
+      //   title: "代码",
+      //   dataIndex: "code",
+      //   width: 120,
+      //   required: true,
+      // },
       {
         title: "名称",
         dataIndex: "name",
         width: 160,
         required: true,
         render: (text, record) => <Tooltip title={record.className}>{text}</Tooltip>
+      },
+      {
+        title: "群组类型",
+        dataIndex: "groupCategoryRemark",
+        width: 160,
+        required: true,
       },
       {
         title: '冻结',

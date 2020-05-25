@@ -2,7 +2,7 @@
 * @Author: zp
 * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-05-23 07:59:51
+ * @Last Modified time: 2020-05-25 16:23:03
 */
 import { utils } from 'suid';
 import { constants } from '@/utils';
@@ -24,7 +24,7 @@ export async function saveParent(data) {
 
 /** 保存字表行数据 */
 export async function saveChild(data) {
-  const url = `${NOTIFY_SERVER_PATH}${contextPath}/addGroupUser`;
+  const url = `${NOTIFY_SERVER_PATH}${contextPath}/addGroupItem`;
   return request({
     url,
     method: "POST",
@@ -43,7 +43,7 @@ export async function delParentRow(params) {
 
 /** 删除字表格数据 */
 export async function delChildRow(params) {
-  const url = `${NOTIFY_SERVER_PATH}${contextPath}/removeGroupUser`;
+  const url = `${NOTIFY_SERVER_PATH}${contextPath}/removeGroupItem`;
   return request({
     url,
     method: "POST",

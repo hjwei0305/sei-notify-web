@@ -188,14 +188,14 @@ class ChildTable extends Component {
         }
       },
       {
-        title: "用户帐号",
-        dataIndex: "userAccount",
+        title: "群组项代码",
+        dataIndex: "itemCode",
         width: 120,
         required: true,
       },
       {
-        title: "用户姓名",
-        dataIndex: "userName",
+        title: "群组项名称",
+        dataIndex: "itemName",
         width: 180,
         required: true,
       },
@@ -225,7 +225,7 @@ class ChildTable extends Component {
         groupId: currPRowData && currPRowData.id,
       },
       selectedRowKeys,
-      searchProperties: ['userAccount', 'userName'],
+      searchProperties: ['itemCode', 'itemName'],
       onSelectRow: (selectedKeys) => {
         let tempKeys = selectedKeys;
         if (isEqual(selectedKeys, selectedRowKeys)) {
@@ -239,7 +239,7 @@ class ChildTable extends Component {
       toolBar: toolBarProps,
       allowCancelSelect: true,
       store: {
-        url: `${NOTIFY_SERVER_PATH}/group/getGroupUsers`,
+        url: `${NOTIFY_SERVER_PATH}/group/getGroupItems`,
       },
     };
   };
