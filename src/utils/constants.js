@@ -59,10 +59,11 @@ export const GROUP_CATEGORY = [{
   label: '组织机构',
   value: 'ORG',
 },
+{
+  label: '岗位',
+  value: 'POS',
+},
 // {
-//   label: '岗位',
-//   value: 'POS',
-// }, {
 //   label: '角色',
 //   value: 'ROLE',
 // }

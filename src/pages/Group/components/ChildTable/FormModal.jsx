@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { Form, Input, } from "antd";
 import { ExtModal, ScrollBar, ComboGrid, ComboTree, } from 'suid';
 import { constants } from '@/utils';
+import { Fragment } from "react";
 
 const { NOTIFY_SERVER_PATH, } = constants;
 const FormItem = Form.Item;
@@ -21,6 +22,31 @@ class FormModal extends PureComponent {
     });
   };
 
+  getPosComboTreeProps = () => {
+    const { form, } = this.props;
+    return {
+      form,
+      name: 'posOrgName',
+      field: ['posOrgId',],
+      // field: ['targetCode'],
+      store: {
+        url: `/sei-notify/bulletin/getUserAuthorizedTreeOrg`,
+      },
+      reader: {
+        name: 'name',
+        field: ['id'],
+      },
+      afterSelect: () => {
+        form.setFieldsValue({
+          itemId: '',
+          itemCode: '',
+          itemName: '',
+        });
+      },
+      placeholder: '请选择组织机构',
+    };
+  }
+
   getComboTreeProps = () => {
     const { form, } = this.props;
     return {
@@ -36,6 +62,51 @@ class FormModal extends PureComponent {
         field: ['id', 'code'],
       },
       placeholder: '请选择机构',
+    };
+  }
+
+  getPosComboGridProps = () => {
+    const { form } = this.props;
+    const columns = [{
+      title: '岗位代码',
+      width: 80,
+      dataIndex: 'code',
+    }, {
+      title: '岗位名称',
+      width: 80,
+      dataIndex: 'name',
+    }, {
+      title: '岗位类别',
+      width: 80,
+      dataIndex: 'positionCategoryName',
+    }];
+    return {
+      form,
+      columns,
+      name: 'itemName',
+      field: ['itemId', 'itemCode'],
+      searchProperties: ['code', 'name'],
+      remotePaging: true,
+      store: {
+        type: 'POST',
+        params: {
+          filters: [
+            {
+              "fieldName": "organizationId",
+              "value": form.getFieldValue('posOrgId'),
+              "operator": "EQ",
+            }
+          ],
+        },
+        autoLoad: false,
+        url: `${NOTIFY_SERVER_PATH}/group/findPositionByPage`,
+      },
+      rowKey: "id",
+      reader: {
+        name: 'name',
+        field: ['id', 'code'],
+      },
+      placeholder: '请先选择机构，然后选择岗位',
     };
   }
 
@@ -133,6 +204,30 @@ class FormModal extends PureComponent {
                     }]
                   })(<ComboTree {...this.getComboTreeProps()} />)}
                 </FormItem>
+                ) : null
+              }
+              {
+                category === "POS" ? (<Fragment>
+                  <FormItem label="组织机构id" style={{ display: 'none' }}>
+                    {getFieldDecorator("posOrgId", {})(<Input />)}
+                  </FormItem>
+                  <FormItem label="组织机构">
+                    {getFieldDecorator("posOrgName", {
+                      rules: [{
+                        required: true,
+                        message: "组织机构不能为空",
+                      }]
+                    })(<ComboTree {...this.getPosComboTreeProps()} />)}
+                  </FormItem>
+                  <FormItem label="岗位">
+                    {getFieldDecorator("itemName", {
+                      rules: [{
+                        required: true,
+                        message: "岗位不能为空",
+                      }]
+                    })(<ComboGrid disabled={!form.getFieldValue('posOrgId')} {...this.getPosComboGridProps()} />)}
+                  </FormItem>
+                </Fragment>
                 ) : null
               }
             </Form>
