@@ -1,16 +1,14 @@
 import React, { PureComponent } from "react";
-import { Form, Input, Drawer, Button, } from "antd";
+import { Drawer, Button, } from "antd";
 import cls from 'classnames';
-import { ComboGrid, ComboTree, ListCard, ExtIcon } from 'suid';
+import { ComboTree, ListCard, } from 'suid';
 import { constants } from '@/utils';
 import { Fragment } from "react";
 import OrgTree from './OrgTree';
 import styles from './index.less';
 
 const { NOTIFY_SERVER_PATH, } = constants;
-const FormItem = Form.Item;
 
-@Form.create()
 class FormDrawer extends PureComponent {
 
   state = {
@@ -206,28 +204,22 @@ class FormDrawer extends PureComponent {
   }
 
   render() {
-    const { form, visible, onCancel, rowData, pRowData } = this.props;
-    const { getFieldDecorator } = form;
-    getFieldDecorator('itemCode', { initialValue: '' });
-    getFieldDecorator('itemId', { initialValue: '' });
-    const formItemLayout = {
-      labelCol: {
-        span: 0
-      },
-      wrapperCol: {
-        span: 24,
-      }
-    };
+    const { visible, onCancel, rowData, pRowData } = this.props;
     const title = rowData ? '编辑' : '分配群组项';
-    const { id: groupId, category } = pRowData || {};
-    console.log("FormDrawer -> render -> category", category)
+    const { category } = pRowData || {};
 
     return (
       <Drawer
         visible={visible}
         destroyOnClose
         className={cls(styles['drawer-wrapper'])}
-        onClose={onCancel}
+        onClose={() => {
+          this.setState({
+            data: []
+          }, () => {
+            onCancel()
+          });
+        }}
         title={title}
         width={550}
       >
@@ -241,45 +233,6 @@ class FormDrawer extends PureComponent {
           {
             category === "ORG" ? (<OrgTree {...this.getOrgTreeProps()} />) : null
           }
-
-            <Form style={{ padding: '0 10px',}} {...formItemLayout} layout="horizontal">
-              {
-                category === "" ? (
-                  <FormItem label="组织机构">
-                  {getFieldDecorator("itemName", {
-                    rules: [{
-                      required: true,
-                      message: "组织机构不能为空",
-                    }]
-                  })(<ComboTree {...this.getComboTreeProps()} />)}
-                </FormItem>
-                ) : null
-              }
-              {
-                category === "" ? (<Fragment>
-                  <FormItem label="组织机构id" style={{ display: 'none' }}>
-                    {getFieldDecorator("posOrgId", {})(<Input />)}
-                  </FormItem>
-                  <FormItem label="组织机构">
-                    {getFieldDecorator("posOrgName", {
-                      rules: [{
-                        required: true,
-                        message: "组织机构不能为空",
-                      }]
-                    })(<ComboTree {...this.getPosComboTreeProps()} />)}
-                  </FormItem>
-                  <FormItem label="岗位">
-                    {getFieldDecorator("itemName", {
-                      rules: [{
-                        required: true,
-                        message: "岗位不能为空",
-                      }]
-                    })(<ComboGrid disabled={!form.getFieldValue('posOrgId')} {...this.getPosComboGridProps()} />)}
-                  </FormItem>
-                </Fragment>
-                ) : null
-              }
-            </Form>
         </div>
       </Drawer>
     );
