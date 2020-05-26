@@ -307,7 +307,8 @@ class Bulletin extends Component {
     const { rowData, } = bulletin;
 
     return {
-      id: rowData && rowData.id,
+      showHead: true,
+      id: rowData && rowData.msgId,
       msgCategory: MSG_CATEGORY[0].value,
       onBack: () => {
         dispatch({

@@ -96,6 +96,10 @@ class FormModal extends PureComponent {
       width: 80,
       dataIndex: 'groupCategoryRemark',
     }, {
+      title: '群组代码',
+      width: 80,
+      dataIndex: 'code',
+    }, {
       title: '群组名称',
       width: 80,
       dataIndex: 'name',

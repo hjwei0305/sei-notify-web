@@ -202,7 +202,6 @@ class userBulletin extends Component {
         "fieldName": "category",
         "value": category,
         "operator": "EQ",
-        "fieldType": "String"
       }
     );
     if(isRead) {

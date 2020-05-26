@@ -191,12 +191,12 @@ class CascadeTableMaster extends Component {
           );
         }
       },
-      // {
-      //   title: "代码",
-      //   dataIndex: "code",
-      //   width: 120,
-      //   required: true,
-      // },
+      {
+        title: "代码",
+        dataIndex: "code",
+        width: 120,
+        required: true,
+      },
       {
         title: "名称",
         dataIndex: "name",

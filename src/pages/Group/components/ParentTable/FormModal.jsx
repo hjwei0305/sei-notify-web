@@ -57,7 +57,7 @@ class FormModal extends PureComponent {
                   initialValue: id,
                 })(<Input />)}
               </FormItem>
-              {/* <FormItem label="代码">
+              <FormItem label="代码">
                 {getFieldDecorator("code", {
                   initialValue: code,
                   rules: [{
@@ -65,7 +65,7 @@ class FormModal extends PureComponent {
                     message: "代码不能为空",
                   }]
                 })(<Input disabled={!!rowData} />)}
-              </FormItem> */}
+              </FormItem>
               <FormItem label="名称">
                 {getFieldDecorator("name", {
                   initialValue: name,
