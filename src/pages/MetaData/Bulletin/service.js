@@ -32,6 +32,15 @@ export async function view(ids, category) {
   });
 }
 
+/** 获取通告信息 */
+export async function getBulletin(id) {
+  const url = `${NOTIFY_SERVER_PATH}/bulletin/getBulletin?id=${id}`;
+  return request({
+    url,
+    method: "GET",
+  });
+}
+
 /** 发布通告信息 */
 export async function release(data) {
   const url = `${NOTIFY_SERVER_PATH}/bulletin/releaseBulletin`;

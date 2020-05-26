@@ -295,7 +295,7 @@ class Bulletin extends Component {
 
     return {
       save: this.save,
-      rowData,
+      notifyId: rowData && rowData.id,
       showModal,
       closeFormModal: this.closeFormModal,
       saving: loading.effects["bulletin/save"]

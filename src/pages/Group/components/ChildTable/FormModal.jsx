@@ -83,21 +83,21 @@ class FormModal extends PureComponent {
     return {
       form,
       columns,
+      cascadeParams: {
+        filters: [
+          {
+            "fieldName": "organizationId",
+            "value": form.getFieldValue('posOrgId'),
+            "operator": "EQ",
+          }
+        ],
+      },
       name: 'itemName',
       field: ['itemId', 'itemCode'],
       searchProperties: ['code', 'name'],
       remotePaging: true,
       store: {
         type: 'POST',
-        params: {
-          filters: [
-            {
-              "fieldName": "organizationId",
-              "value": form.getFieldValue('posOrgId'),
-              "operator": "EQ",
-            }
-          ],
-        },
         autoLoad: false,
         url: `${NOTIFY_SERVER_PATH}/group/findPositionByPage`,
       },
