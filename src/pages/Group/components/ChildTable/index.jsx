@@ -5,7 +5,7 @@ import { Button, Popconfirm, } from "antd";
 import { isEqual,} from 'lodash';
 import { ExtTable, utils, ExtIcon, } from 'suid';
 import { constants } from '@/utils';
-import FormModal from './FormModal';
+import FormModal from './Drawer';
 import styles from "../../index.less";
 
 const { authAction } = utils;

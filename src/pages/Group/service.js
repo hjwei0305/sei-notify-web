@@ -2,7 +2,7 @@
 * @Author: zp
 * @Date:   2020-02-02 11:57:24
  * @Last Modified by: zp
- * @Last Modified time: 2020-05-25 16:23:03
+ * @Last Modified time: 2020-05-26 16:35:16
 */
 import { utils } from 'suid';
 import { constants } from '@/utils';
@@ -48,6 +48,14 @@ export async function delChildRow(params) {
     url,
     method: "POST",
     data: params.ids,
+  });
+}
+
+/** 获取有权限的数 */
+export async function getUserAuthorizedTreeOrg() {
+  const url = `/sei-notify/bulletin/getUserAuthorizedTreeOrg`;
+  return request({
+    url,
   });
 }
 
