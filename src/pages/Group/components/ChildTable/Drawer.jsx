@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Drawer, Button, } from "antd";
+import { Drawer, Button, Tooltip } from "antd";
 import cls from 'classnames';
 import { ComboTree, ListCard, } from 'suid';
 import { constants } from '@/utils';
@@ -139,13 +139,17 @@ class FormDrawer extends PureComponent {
     let cmp = null;
     if (category === 'USER') {
       cmp = (
-        <Button loading={saving} icon="plus" disabled={!(data && data.length)} type="primary" onClick={this.handleAssignUsers} />
+        <Tooltip title="分配用户">
+          <Button loading={saving} icon="import" disabled={!(data && data.length)} type="primary" onClick={this.handleAssignUsers} />
+        </Tooltip>
       );
     }
 
     if(category === "ORG") {
       cmp = (
-        <Button disabled={!(data && data.length)} loading={saving} icon="plus" type="primary" onClick={this.handleAssignPos} />
+        <Tooltip title="分配组织">
+          <Button disabled={!(data && data.length)} loading={saving} icon="import" type="primary" onClick={this.handleAssignPos} />
+        </Tooltip>
       );
     }
 
@@ -154,7 +158,10 @@ class FormDrawer extends PureComponent {
         <Fragment>
           <ComboTree style={{ width: 200, }} {...this.getPosComboTreeProps()} />
           {/* <ExtIcon type="plus" onClick={this.handleAssignPos} tooltip={{ title: '分配岗位' }} antd /> */}
-          <Button disabled={!(data && data.length)} loading={saving} icon="plus" type="primary" onClick={this.handleAssignPos} />
+          <Tooltip title="分配岗位">
+            <Button disabled={!(data && data.length)} loading={saving} icon="import" type="primary" onClick={this.handleAssignPos} />
+          </Tooltip>
+
         </Fragment>
       );
     }
