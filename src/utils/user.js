@@ -12,7 +12,7 @@ export const setCurrentUser = user => {
 /** 获取当前用户信息 */
 export const getCurrentUser = () => sessionStorage.get(CURRENT_USER);
 
-export const getCurrentLocale = () => localStorage.get(CURRENT_LOCALE);
+export const getCurrentLocale = () => window.top.__portal__ ? localStorage.get(CURRENT_LOCALE) : window.localStorage.get(CURRENT_LOCALE);
 
 export const setCurrentAuth = auths => sessionStorage.set(AUTH, auths);
 export const setCurrentPolicy = policy => sessionStorage.set(POLICY, policy);
