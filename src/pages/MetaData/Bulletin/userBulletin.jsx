@@ -4,6 +4,7 @@ import withRouter from "umi/withRouter";
 import { Radio, Button, Tag, Select } from 'antd';
 import { connect } from "dva";
 import { ExtTable, ExtIcon } from 'suid'
+import queryString from "query-string";
 import { formatMessage, } from "umi-plugin-react/locale";
 import { constants } from "@/utils";
 import ViewDetail from "./components/ViewDetail";
@@ -15,10 +16,15 @@ const { NOTIFY_SERVER_PATH, TARGETTYPE_OPT, MSG_CATEGORY, } = constants;
 @connect(({ bulletin, loading }) => ({ bulletin, loading }))
 class userBulletin extends Component {
 
-  state = {
-    isRead: '0',
-    category: MSG_CATEGORY[0].value,
+  constructor(props) {
+    super(props);
+    this.params = queryString.parse(window.location.href.split('?')[1]);
+    this.state = {
+      isRead: '0',
+      category: this.params.category || MSG_CATEGORY[0].value,
+    }
   }
+
 
   handleChange = (e) => {
     this.setState({

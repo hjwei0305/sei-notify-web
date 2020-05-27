@@ -8,7 +8,6 @@ class MsgDetail extends Component {
   constructor(props) {
     super(props);
     this.params = queryString.parse(window.location.href.split('?')[1]);
-    console.log("MsgDetail -> constructor -> params", this.params)
   }
 
   getViewDetailProps = () => {
