@@ -43,6 +43,7 @@ class FormModal extends PureComponent {
         if (success) {
           this.setState({
             editData: data,
+            targetType: data.targetType
           })
         } else {
           message.error(msg);
@@ -193,13 +194,13 @@ class FormModal extends PureComponent {
                       }]
                     })(<Input />)}
                   </FormItem>
-                  <FormItem style={{ display: 'none' }}>
+                  {/* <FormItem style={{ display: 'none' }}>
                     {getFieldDecorator("targetType", {
                       initialValue: targetType,
                     })(
                       <Input />
                     )}
-                  </FormItem>
+                  </FormItem> */}
                   <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
                     {getFieldDecorator("targetType", {
                       initialValue: targetType,
