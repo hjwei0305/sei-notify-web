@@ -56,7 +56,8 @@ class FormModal extends PureComponent {
   onFormSubmit = _ => {
     const { form, save, } = this.props;
     const { editData, } = this.state;
-    form.validateFields((err, formData) => {
+
+    form.validateFieldsAndScroll((err, formData) => {
       if (err) {
         return;
       }
@@ -236,7 +237,7 @@ class FormModal extends PureComponent {
                   )}
                   <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
                     {getFieldDecorator("priority", {
-                      initialValue: editData ? editData.priority : "",
+                      initialValue: editData ? editData.priority : PRIORITY_OPT[2].value,
                       rules: [{
                         required: true,
                         message: formatMessage({ id: "bulletin.priority.required", defaultMessage: "优先级不能为空" })
