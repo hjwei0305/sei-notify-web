@@ -23,7 +23,7 @@ class OrgTree extends Component {
     const { treeData } = this.state;
     const { onSelect, toolBar, } = this.props;
     return (
-      <TreeView treeData={treeData} toolBar={toolBar} onSelect={onSelect} />
+      <TreeView checkable={true} treeData={treeData} toolBar={toolBar} onChange={onSelect} />
     );
   }
 }

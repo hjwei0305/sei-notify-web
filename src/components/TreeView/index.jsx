@@ -68,7 +68,7 @@ class TreeView extends Component {
       },
       () => {
         if (onChange) {
-          onChange(checkedItems[0]);
+          onChange(checkedItems);
         }
       },
     );
@@ -218,7 +218,7 @@ class TreeView extends Component {
       selectedKeys,
       filterTreeData,
     } = this.state;
-    const { height = '100%', toolBar } = this.props;
+    const { height = '100%', toolBar, checkable=false, } = this.props;
     const { type } = toolBar || {};
     const toolBarHeight = type === 'vertical' ? 76 : 38;
 
@@ -231,7 +231,7 @@ class TreeView extends Component {
               <Tree
                 onCheck={this.handleCheck}
                 onSelect={this.handleSelect}
-                checkable={false}
+                checkable={checkable}
                 blockNode
                 onExpand={this.onExpand}
                 expandedKeys={expandedKeys}
