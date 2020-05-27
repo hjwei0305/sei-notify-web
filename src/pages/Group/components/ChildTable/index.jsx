@@ -210,7 +210,7 @@ class ChildTable extends Component {
               onClick={this.add}
               ignore='true'
             >
-              新建
+              分配
             </Button>
           )}
           <Button onClick={this.reloadData}>
