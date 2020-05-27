@@ -71,6 +71,7 @@ class FormDrawer extends PureComponent {
       reader: {
         name: 'name',
       },
+      width: 300,
       afterSelect: (value) => {
         this.setState({
           organizationId: value.id,
