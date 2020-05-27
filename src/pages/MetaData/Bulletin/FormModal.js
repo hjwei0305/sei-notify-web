@@ -28,10 +28,8 @@ const buttonWrapper = { span: 20, offset: 4 };
 class FormModal extends PureComponent {
   constructor(props) {
     super(props);
-    // const { editData} = props;
     this.state = {
       isPreview: false,
-      // targetType: editData ? editData.targetType : TARGETTYPE_OPT[1].value,
       targetType: TARGETTYPE_OPT[1].value,
       editData: null,
     };
@@ -56,7 +54,8 @@ class FormModal extends PureComponent {
   }
 
   onFormSubmit = _ => {
-    const { form, save, editData } = this.props;
+    const { form, save, } = this.props;
+    const { editData, } = this.state;
     form.validateFields((err, formData) => {
       if (err) {
         return;
@@ -74,6 +73,8 @@ class FormModal extends PureComponent {
         docIds: tempFiles ? tempFiles.map(attach => attach.id) : [],
       };
       params = Object.assign({},editData || {}, params, formData);
+      console.log("FormModal -> formData", formData)
+      console.log("FormModal -> editData", editData)
       save(params);
     });
   };
