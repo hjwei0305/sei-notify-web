@@ -64,6 +64,7 @@ class userBulletin extends Component {
 
     return {
       id,
+      showHead: true,
       msgCategory,
       onBack: () => {
         dispatch({
