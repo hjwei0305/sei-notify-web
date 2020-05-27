@@ -36,8 +36,8 @@ export const PRIORITY_OPT = [{
 }];
 
 export const TARGETTYPE_OPT = [{
-  label: '组织机构',
-  value: 'ORG',
+  label: '系统',
+  value: 'SYSTEM',
 },{
   label: '群组',
   value: 'GROUP',

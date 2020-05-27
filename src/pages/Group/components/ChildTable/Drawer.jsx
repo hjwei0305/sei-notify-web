@@ -194,7 +194,7 @@ class FormDrawer extends PureComponent {
         autoLoad: false,
         url: `${NOTIFY_SERVER_PATH}/group/getUserAccounts`,
       },
-      rowKey: "itemId",
+      rowKey: (item) => `${item.itemCode}${item.itemId}`,
     };
   }
 

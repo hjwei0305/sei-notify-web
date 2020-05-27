@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker,Skeleton, message } from 'antd';
@@ -73,8 +73,6 @@ class FormModal extends PureComponent {
         docIds: tempFiles ? tempFiles.map(attach => attach.id) : [],
       };
       params = Object.assign({},editData || {}, params, formData);
-      console.log("FormModal -> formData", formData)
-      console.log("FormModal -> editData", editData)
       save(params);
     });
   };
@@ -85,10 +83,17 @@ class FormModal extends PureComponent {
     this.setState({
       targetType: e.target.value,
     }, () => {
-      form.setFieldsValue({
-        targetCode: '',
-        targetName: '',
-      });
+      if (e.target.value === TARGETTYPE_OPT[0].value) {
+        form.setFieldsValue({
+          targetName: e.target.value,
+          targetValue: e.target.value,
+        });
+      } else {
+        form.setFieldsValue({
+          targetName: '',
+          targetValue: '',
+        });
+      }
     });
   }
 
@@ -194,7 +199,7 @@ class FormModal extends PureComponent {
                       <Input />
                     )}
                   </FormItem>
-                  {/* <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
+                  <FormItem label={formatMessage({ id: "bulletin.targetType", defaultMessage: "发布类型" })}>
                     {getFieldDecorator("targetType", {
                       initialValue: targetType,
                       rules: [{
@@ -204,23 +209,21 @@ class FormModal extends PureComponent {
                     })(
                       <RadioGroup onChange={this.handleChangeTarget} options={TARGETTYPE_OPT} />
                     )}
-                  </FormItem> */}
+                  </FormItem>
                   <FormItem style={{ display: 'none' }}>
                     {getFieldDecorator("targetValue", {
                       initialValue: editData ? editData.targetValue : "",
                     })(<Input />)}
                   </FormItem>
-                  {/* {targetType === TARGETTYPE_OPT[0].value ? (
-                    <FormItem label={formatMessage({ id: "bulletin.institution", defaultMessage: "发布机构" })}>
-                      {getFieldDecorator("targetName", {
-                        initialValue: editData ? editData.targetName : "",
-                        rules: [{
-                          required: true,
-                          message: formatMessage({ id: "bulletin.institution.required", defaultMessage: "发布机构不能为空" })
-                        }]
-                      })(<ComboTree {...this.getComboTreeProps()}/>)}
-                    </FormItem>
-                  ) : ( */}
+                  {targetType === TARGETTYPE_OPT[0].value ? (
+                    <Fragment>
+                      <FormItem style={{ display: 'none' }}>
+                        {getFieldDecorator("targetName", {
+                          initialValue: targetType,
+                        })(<Input />)}
+                      </FormItem>
+                    </Fragment>
+                  ) : (
                     <FormItem label="发布群组">
                       {getFieldDecorator("targetName", {
                         initialValue: editData ? editData.targetName : "",
@@ -230,7 +233,7 @@ class FormModal extends PureComponent {
                         }]
                       })(<ComboGrid {...this.getComboGridProps()}/>)}
                     </FormItem>
-                  {/* )} */}
+                  )}
                   <FormItem label={formatMessage({ id: "bulletin.priority", defaultMessage: "优先级" })}>
                     {getFieldDecorator("priority", {
                       initialValue: editData ? editData.priority : "",
