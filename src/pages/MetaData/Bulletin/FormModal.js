@@ -271,7 +271,7 @@ class FormModal extends PureComponent {
                       <Attachment
                       onAttachmentRef={inst => this.attachmentRef = inst}
                       entityId = {editData && editData.contentId}
-                      serviceHost='/api-gateway/edm-service'
+                      serviceHost='/edm-service'
                     >
 
                     </Attachment>

@@ -98,7 +98,7 @@ class ViewDetail extends React.Component {
                     allowUpload={false}
                     allowDelete={false}
                     // viewType="card"
-                    serviceHost='/api-gateway/edm-service'
+                    serviceHost='/edm-service'
                     entityId = {detail.id}
                     onChange = { (docIds) => {
                       this.setState({
