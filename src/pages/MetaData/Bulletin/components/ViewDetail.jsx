@@ -92,7 +92,7 @@ class ViewDetail extends React.Component {
                   }}>
                     <div dangerouslySetInnerHTML={{__html: detail.content}}></div>
                   </div>
-{/*                   <Divider style={{
+                <Divider style={{
                   }} dashed={true}>附件</Divider>
                   <Attachment
                     allowUpload={false}
@@ -105,7 +105,7 @@ class ViewDetail extends React.Component {
                         attachNum: docIds.length
                       });
                     } }
-                  /> */}
+                  />
                   <Row type="flex" style={{
                     justifyContent: 'flex-end',
                   }}>

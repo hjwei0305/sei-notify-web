@@ -141,7 +141,7 @@ class userBulletin extends Component {
         required: true,
       },{
         title: formatMessage({ id: "bulletin.releaseDate", defaultMessage: "发布时间" }),
-        dataIndex: "releaseDate",
+        dataIndex: "publishDate",
         required: true,
         width: 180
       },

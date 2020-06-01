@@ -265,7 +265,7 @@ class FormModal extends PureComponent {
                       }]
                     })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
                   </FormItem>
-{/*                   <FormItem label="附件">
+                  <FormItem label="附件">
                   {getFieldDecorator("Attachments", {
                     })(
                       <Attachment
@@ -276,7 +276,7 @@ class FormModal extends PureComponent {
 
                     </Attachment>
                     )}
-                  </FormItem> */}
+                  </FormItem>
                   <FormItem wrapperCol={buttonWrapper} className="btn-submit">
                     <Button
                       type="primary"
