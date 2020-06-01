@@ -99,7 +99,7 @@ class ViewDetail extends React.Component {
                     allowDelete={false}
                     // viewType="card"
                     serviceHost='/edm-service'
-                    entityId = {detail.id}
+                    entityId = {detail.contentId}
                     onChange = { (docIds) => {
                       this.setState({
                         attachNum: docIds.length
