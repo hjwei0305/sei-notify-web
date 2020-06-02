@@ -6,6 +6,7 @@ import { Skeleton, Divider, Empty, Row, Col, Button, Card, } from 'antd';
 import { constants, } from '@/utils';
 
 const { BASE_URL, } = constants;
+console.log("BASE_URL", BASE_URL)
 
 @connect(({ bulletin, loading, }) => ({ bulletin, loading, }))
 class ViewDetail extends React.Component {
