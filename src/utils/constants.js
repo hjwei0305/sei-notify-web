@@ -4,6 +4,8 @@ const { NODE_ENV, MOCK } = process.env;
 
 const { CONST_GLOBAL } = utils.constants;
 
+const gateway = '/api-gateway'
+
 const getBaseUrl = function () {
   if (NODE_ENV !== 'production') {
     if (MOCK === 'yes') {
@@ -12,7 +14,7 @@ const getBaseUrl = function () {
       return '/service.api'
     }
   }
-  return GATEWAY_CONTEXTPATH;
+  return gateway;
 }
 /** 计量单位功能项*/
 const BULLETIN_BTN_KEY = {
@@ -77,5 +79,5 @@ export const AUTH_SERVER_PATH = `${BASE_URL}/sei-auth`;
 
 export const NOTIFY_SERVER_PATH = `${BASE_URL}/sei-notify`;
 
-export const GATEWAY_CONTEXTPATH = '/api-gateway';
+export const GATEWAY_CONTEXTPATH = gateway;
 
