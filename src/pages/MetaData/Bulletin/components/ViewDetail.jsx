@@ -3,6 +3,10 @@ import { connect, } from 'dva';
 import { Attachment, } from 'suid';
 import { Skeleton, Divider, Empty, Row, Col, Button, Card, } from 'antd';
 
+import { constants, } from '@/utils';
+
+const { BASE_URL, } = constants;
+
 @connect(({ bulletin, loading, }) => ({ bulletin, loading, }))
 class ViewDetail extends React.Component {
   state = {
@@ -98,7 +102,7 @@ class ViewDetail extends React.Component {
                     allowUpload={false}
                     allowDelete={false}
                     // viewType="card"
-                    serviceHost='/edm-service'
+                    serviceHost={`${BASE_URL}/edm-service`}
                     entityId = {detail.contentId}
                     onChange = { (docIds) => {
                       this.setState({

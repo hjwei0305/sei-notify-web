@@ -1,11 +1,9 @@
 import { utils } from 'suid';
 import { formatMessage } from "umi-plugin-react/locale";
 import { notification } from "antd";
-import { BASE_URL, } from './constants.js';
 import eventBus from './eventBus';
 const { request } = utils;
 const { NODE_ENV } = process.env;
-request.defaults.baseURL = BASE_URL;
 
 /** 添加拦截器跳401到登录页面 */
 request.interceptors.response.use(res => res, err => {

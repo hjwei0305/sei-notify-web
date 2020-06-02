@@ -3,13 +3,12 @@ import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker,Skeleton, message } from 'antd';
 import {RichEditor, ScrollBar, ComboGrid, Attachment, } from "suid";
-
 import moment from 'moment';
-import { getBulletin, } from './service';
 import { constants, } from '@/utils';
+import { getBulletin, } from './service';
 import styles from "./FormMoal.less";
 
-const { PRIORITY_OPT, TARGETTYPE_OPT, NOTIFY_SERVER_PATH, } = constants;
+const { PRIORITY_OPT, TARGETTYPE_OPT, NOTIFY_SERVER_PATH, BASE_URL } = constants;
 
 const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
@@ -72,7 +71,7 @@ class FormModal extends PureComponent {
         category: 'SEI_BULLETIN',
         effectiveDate: effectiveDate.format('YYYY-MM-DD'),
         invalidDate: invalidDate.format('YYYY-MM-DD'),
-        docIds: tempFiles ? tempFiles.map(attach => attach.id) : [],
+        docIds: tempFiles ? tempFiles.map(attach => attach.id || attach.uid) : [],
       };
       params = Object.assign({},editData || {}, params, formData);
       save(params);
@@ -271,7 +270,7 @@ class FormModal extends PureComponent {
                       <Attachment
                       onAttachmentRef={inst => this.attachmentRef = inst}
                       entityId = {editData && editData.contentId}
-                      serviceHost='/edm-service'
+                      serviceHost={`${BASE_URL}/edm-service`}
                     >
 
                     </Attachment>

@@ -71,9 +71,9 @@ export const GROUP_CATEGORY = [{
 
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };
 
-export const AUTH_SERVER_PATH = '/sei-auth';
+export const AUTH_SERVER_PATH = `${getBaseUrl()}/sei-auth`;
 
-export const NOTIFY_SERVER_PATH = '/sei-notify';
+export const NOTIFY_SERVER_PATH = `${getBaseUrl()}/sei-notify`;
 
 export const GATEWAY_CONTEXTPATH = '/api-gateway';
 
