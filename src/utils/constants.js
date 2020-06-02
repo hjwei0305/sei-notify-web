@@ -71,10 +71,11 @@ export const GROUP_CATEGORY = [{
 
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };
 
-export const AUTH_SERVER_PATH = `${getBaseUrl()}/sei-auth`;
+export const BASE_URL = getBaseUrl();
 
-export const NOTIFY_SERVER_PATH = `${getBaseUrl()}/sei-notify`;
+export const AUTH_SERVER_PATH = `${BASE_URL}/sei-auth`;
+
+export const NOTIFY_SERVER_PATH = `${BASE_URL}/sei-notify`;
 
 export const GATEWAY_CONTEXTPATH = '/api-gateway';
 
-export const BASE_URL = getBaseUrl();
