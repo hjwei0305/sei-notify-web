@@ -66,7 +66,7 @@ class FormDrawer extends PureComponent {
     return {
       name: 'posOrgName',
       store: {
-        url: `/sei-notify/bulletin/getUserAuthorizedTreeOrg`,
+        url: `${NOTIFY_SERVER_PATH}/bulletin/getUserAuthorizedTreeOrg`,
       },
       reader: {
         name: 'name',
