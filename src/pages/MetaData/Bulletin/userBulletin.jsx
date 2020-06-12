@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import cls from "classnames";
 import withRouter from "umi/withRouter";
-import { Radio, Button, Tag, Select } from 'antd';
+import { Radio, Button, Tag, Select, Icon, Dropdown, Menu, message, } from 'antd';
 import { connect } from "dva";
 import { ExtTable, ExtIcon } from 'suid'
 import queryString from "query-string";
@@ -66,7 +66,7 @@ class userBulletin extends Component {
     const { bulletin, dispatch, } = this.props;
     const { category: msgCategory, } = this.state;
     const { rowData, } = bulletin;
-    const { id,} = rowData || {};
+    const { id, } = rowData || {};
 
     return {
       id,
@@ -82,6 +82,25 @@ class userBulletin extends Component {
         });
       }
     };
+  }
+
+  handleMenuClick = ({ key }) => {
+    if(this.selectRowKeys && this.selectRowKeys.length) {
+
+      const { dispatch } = this.props;
+
+      dispatch({
+        type: `bulletin/${key}`,
+        payload: this.selectRowKeys,
+      }).then(success => {
+        if(success) {
+          this.tableRef && this.tableRef.manualSelectedRows([])
+          this.reloadData();
+        }
+      })
+    } else {
+      message.warn('请选择需要操作的消息');
+    }
   }
 
   getExtTableProps = () => {
@@ -168,6 +187,17 @@ class userBulletin extends Component {
 
     ];
 
+    const menu = (
+      <Menu onClick={this.handleMenuClick}>
+        <Menu.Item key="unreadSelected">
+          未读
+        </Menu.Item>
+        <Menu.Item key="readSelected">
+          已读
+        </Menu.Item>
+      </Menu>
+    );
+
     const toolBarProps = {
       left: (
         <Fragment>
@@ -186,12 +216,19 @@ class userBulletin extends Component {
               <Radio.Button value="1">已读</Radio.Button>
               <Radio.Button value="0">未读</Radio.Button>
             </Radio.Group>
-
+            <Dropdown
+              overlay={(menu)}
+            >
+              <Button
+                style={{
+                  marginLeft: 10,
+                }}
+              >
+                标记为 <Icon type="down" />
+              </Button>
+            </Dropdown>
             <Button
               type='primary'
-              style={{
-                marginLeft: 10,
-              }}
               onClick={() => {
                 this.reloadData();
               }}
@@ -227,7 +264,11 @@ class userBulletin extends Component {
       toolBar: toolBarProps,
       searchProperties: ['subject'],
       bordered: false,
+      checkbox: true,
       remotePaging: true,
+      onSelectRow: (keys, rows) => {
+        this.selectRowKeys = keys;
+      },
       store: {
         type: 'POST',
         url: `${NOTIFY_SERVER_PATH}/message/findMessageByPage`,

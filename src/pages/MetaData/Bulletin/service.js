@@ -60,3 +60,24 @@ export async function cancel(data) {
     data,
   });
 }
+
+/** 标记选中消息为已读 */
+export async function readSelected(data) {
+  const url = `${NOTIFY_SERVER_PATH}/message/readSelected`;
+  return request({
+    url,
+    method: "POST",
+    data,
+  });
+}
+
+/** 标记选中消息为未读 */
+export async function unreadSelected(data) {
+  const url = `${NOTIFY_SERVER_PATH}/message/unreadSelected`;
+  return request({
+    url,
+    method: "POST",
+    data,
+  });
+}
+

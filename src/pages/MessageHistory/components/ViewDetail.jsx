@@ -2,27 +2,25 @@ import React from 'react';
 import { connect, } from 'dva';
 import { Attachment, } from 'suid';
 import { Skeleton, Divider, Empty, Row, Col, Button, Card, } from 'antd';
-
+import moment from 'moment';
 import { constants, } from '@/utils';
 
 const { BASE_URL, } = constants;
 
-@connect(({ bulletin, loading, }) => ({ bulletin, loading, }))
+@connect(({ messageHistory, loading, }) => ({ messageHistory, loading, }))
 class ViewDetail extends React.Component {
   state = {
     detail: null,
   }
 
   componentDidMount() {
-    const { id, dispatch, msgCategory } = this.props;
+    const { id, dispatch, } = this.props;
     if (id) {
 
       dispatch({
-        type: 'bulletin/bulletinOpt',
+        type: 'messageHistory/getById',
         payload: {
-          msgCategory,
-          ids: [id],
-          optType: 'view',
+          id
         },
       }).then(res => {
         const { success, data, } = res || {};
@@ -45,7 +43,7 @@ class ViewDetail extends React.Component {
   getCardProps = () => {
     const { detail, } = this.state;
     const { showHead, } = this.props;
-    let title = detail ? `【${detail.subject}】消息明细` : '';
+    let title = detail ? `消息明细` : '';
 
     return {
       title: showHead ? title : null,
@@ -83,8 +81,6 @@ class ViewDetail extends React.Component {
             { detail ? (
                 <React.Fragment>
                   <h1 style={{ padding: 20, textAlign: 'center', fontSize: 20 }}>{detail.subject}</h1>
-                  {/* <h4 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h4> */}
-                  <h4 style={{ display: 'inline-block' }}>优先级：{`${detail.priorityRemark}`}</h4>
                   <Divider style={{
                     marginTop: 5,
                   }}/>
@@ -93,14 +89,13 @@ class ViewDetail extends React.Component {
                     backgroundColor: 'rgba(208, 205, 205, 0.2)',
                     padding: '12px',
                   }}>
-                    <div dangerouslySetInnerHTML={{__html: detail.content}}></div>
+                    <div dangerouslySetInnerHTML={{__html: detail.content || '暂无'}}></div>
                   </div>
                 <Divider style={{
                   }} dashed={true}>附件</Divider>
                   <Attachment
                     allowUpload={false}
                     allowDelete={false}
-                    // viewType="card"
                     serviceHost={`${BASE_URL}/edm-service`}
                     entityId = {detail.contentId}
                   />
@@ -113,7 +108,7 @@ class ViewDetail extends React.Component {
                       <div style={{
                         marginBottom: 5
                       }}>{detail.createName}</div>
-                      <div>{detail.createTime}</div>
+                      <div>{detail.sendDate ? `发布时间：${moment(detail.sendDate).format('YYYY-MM-DD HH:mm:ss')}` : '' }</div>
                     </Col>
                   </Row>
                 </React.Fragment>

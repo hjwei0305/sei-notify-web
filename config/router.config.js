@@ -29,6 +29,7 @@ export default [
         name: "消息",
         routes: [
           { path: "/message/msgDetail", component: "./MetaData/Bulletin/msgDetail" },
+          { path: "/message/history", component: "./MessageHistory" },
         ]
       },
       {

@@ -26,7 +26,7 @@
     "md5": "^2.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "suid": "^1.2.73"
+    "suid": "1.2.92"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",

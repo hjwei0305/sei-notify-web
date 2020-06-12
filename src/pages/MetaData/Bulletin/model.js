@@ -47,6 +47,26 @@ export default modelExtend(model, {
       }
 
       return re;
+    },
+    * readSelected({ payload, }, { call }) {
+      const re = yield call(services['readSelected'], payload);
+      const { success, message: msg} = re || {};
+      message.destroy();
+      if (!success) {
+        message.error(msg);
+      }
+
+      return success;
+    },
+    * unreadSelected({ payload, }, { call }) {
+      const re = yield call(services['unreadSelected'], payload);
+      const { success, message: msg} = re || {};
+      message.destroy();
+      if (!success) {
+        message.error(msg);
+      }
+
+      return success;
     }
   }
 });

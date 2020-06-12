@@ -285,7 +285,7 @@ class Bulletin extends Component {
       store: {
         type: 'POST',
         url: `${NOTIFY_SERVER_PATH}/bulletin/findByPage`,
-      }
+      },
     };
   }
 
