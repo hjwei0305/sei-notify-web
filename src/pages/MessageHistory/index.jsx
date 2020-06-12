@@ -3,7 +3,7 @@ import { withRouter } from 'umi';
 import { connect } from 'dva';
 import cls from 'classnames';
 import { Button, Tag, } from "antd";
-import { ExtTable, ExtIcon } from 'suid';
+import { ExtTable, ExtIcon, ComboList, } from 'suid';
 import moment from 'moment';
 import PageWrapper from '@/components/PageWrapper';
 import { constants, } from '@/utils';
@@ -17,6 +17,7 @@ const { NOTIFY_SERVER_PATH, } = constants;
 class MessageHistory extends Component {
   state = {
     showViewDetail: false,
+    category: '',
   }
 
   reloadData = _ => {
@@ -73,7 +74,61 @@ class MessageHistory extends Component {
     };
   }
 
+  getCategoryComboListProps = () => {
+
+    return  {
+      // store: {
+      //   autoLoad: false,
+      //   url: `${NOTIFY_SERVER_PATH}/message/getCategory`,
+      // },
+      // {
+      //   DingTalk: "钉钉"
+      //   EMAIL: "电子邮件"
+      //   MiniApp: "微信小程序"
+      //   SEI_BULLETIN: "通告"
+      //   SEI_MESSAGE: "站内信"
+      //   SEI_REMIND: "提醒"
+      //   SMS: "手机短信"
+      //   WeChat: "微信"
+      // },
+      dataSource:[{
+        remark: '全部',
+        value: '',
+      }, {
+        remark: '电子邮件',
+        value: 'EMAIL'
+      }, {
+        remark: '微信小程序',
+        value: 'MiniApp'
+      }, {
+        remark: '手机短信',
+        value: 'SMS'
+      }, {
+        remark: '微信',
+        value: 'WeChat'
+      }, {
+        remark: '钉钉',
+        value: 'DingTalk'
+      }],
+      placeholder: '请选择消息分类',
+      value: '全部',
+      style: {
+        width: 200,
+        marginRight: 10,
+      },
+      reader: {
+        name: 'remark',
+      },
+      afterSelect: ({value: category }) => {
+        this.setState({
+          category,
+        });
+      }
+    };
+  }
+
   getExtableProps = () => {
+    const { category, } = this.state;
     const columns = [
       {
         title: "操作",
@@ -142,13 +197,26 @@ class MessageHistory extends Component {
     const toolBarProps = {
       left: (
         <Fragment>
-          <Button onClick={this.reloadData}>
+          <ComboList {...this.getCategoryComboListProps()} />
+          <Button type="primary" onClick={this.reloadData}>
             刷新
           </Button>
         </Fragment>
       )
     };
+
+    const cascadeParams = {
+      filters: [],
+    };
+    cascadeParams.filters.push(
+      {
+        "fieldName": "category",
+        "value": category,
+        "operator": "EQ",
+      }
+    );
     return {
+      cascadeParams,
       columns,
       bordered: false,
       toolBar: toolBarProps,
