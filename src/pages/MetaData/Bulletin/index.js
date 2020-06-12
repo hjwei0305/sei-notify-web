@@ -280,6 +280,7 @@ class Bulletin extends Component {
     return {
       columns,
       toolBar: toolBarProps,
+      searchProperties: ['subject'],
       bordered: false,
       remotePaging: true,
       store: {
