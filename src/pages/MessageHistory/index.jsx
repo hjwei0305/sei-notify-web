@@ -2,7 +2,7 @@ import React, { Component, Fragment, } from 'react';
 import { withRouter } from 'umi';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Tag, } from "antd";
+import { Button, Tag, Tooltip, } from "antd";
 import { ExtTable, ExtIcon, ComboList, } from 'suid';
 import moment from 'moment';
 import PageWrapper from '@/components/PageWrapper';
@@ -191,6 +191,15 @@ class MessageHistory extends Component {
         required: true,
         render: text => {
           return text ? (<Tag color="green">是</Tag>) : <Tag color="red">否</Tag>
+        }
+      },
+      {
+        title: "发送日志",
+        dataIndex: "sendLog",
+        width: 220,
+        required: true,
+        render: text => {
+          return text ? <Tooltip placeholder="topLeft" title={text}>{text}</Tooltip> : '无';
         }
       },
     ];
