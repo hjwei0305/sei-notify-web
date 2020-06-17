@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import withRouter from "umi/withRouter";
 import { connect } from "dva";
+import moment from 'moment';
 import cls from "classnames";
 import { Button, Popconfirm } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
@@ -168,8 +169,8 @@ class Bulletin extends Component {
               />
             ));
           } else {
-            optList.unshift(...[
-              authAction(
+            if(moment().isAfter(record.invalidDate)) {
+              optList.unshift(authAction(
                 <ExtIcon
                   key={BULLETIN_BTN_KEY.RELEASE}
                   className="to-top"
@@ -181,7 +182,9 @@ class Bulletin extends Component {
                   }
                   antd
                 />
-              ),
+              ));
+            }
+            optList.unshift(...[
               authAction(
                 <ExtIcon
                   key={BULLETIN_BTN_KEY.EDIT}
