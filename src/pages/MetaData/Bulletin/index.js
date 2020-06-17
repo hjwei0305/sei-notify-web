@@ -169,7 +169,7 @@ class Bulletin extends Component {
               />
             ));
           } else {
-            if(moment().isAfter(record.invalidDate)) {
+            if(moment().isBefore(record.invalidDate)) {
               optList.unshift(authAction(
                 <ExtIcon
                   key={BULLETIN_BTN_KEY.RELEASE}
