@@ -169,21 +169,6 @@ class Bulletin extends Component {
               />
             ));
           } else {
-            if(moment().isBefore(record.invalidDate)) {
-              optList.unshift(authAction(
-                <ExtIcon
-                  key={BULLETIN_BTN_KEY.RELEASE}
-                  className="to-top"
-                  onClick={_ => this.handleEvent('release', record)}
-                  type="to-top"
-                  ignore='true'
-                  tooltip={
-                    { title: '发布' }
-                  }
-                  antd
-                />
-              ));
-            }
             optList.unshift(...[
               authAction(
                 <ExtIcon
@@ -221,6 +206,21 @@ class Bulletin extends Component {
                 </Popconfirm>
               )
             ]);
+            if(moment().isBefore(record.invalidDate)) {
+              optList.unshift(authAction(
+                <ExtIcon
+                  key={BULLETIN_BTN_KEY.RELEASE}
+                  className="to-top"
+                  onClick={_ => this.handleEvent('release', record)}
+                  type="to-top"
+                  ignore='true'
+                  tooltip={
+                    { title: '发布' }
+                  }
+                  antd
+                />
+              ));
+            }
           }
 
           return <span className={cls('action-box')}>{optList}</span>;
