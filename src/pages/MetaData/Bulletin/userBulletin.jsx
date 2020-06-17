@@ -56,6 +56,12 @@ class userBulletin extends Component {
             rowData: record,
           }
         });
+        if(!record.read) {
+          dispatch({
+            type: 'bulletin/readSelected',
+            payload: [record.id]
+          });
+        }
         break;
       default:
         break;
@@ -80,6 +86,7 @@ class userBulletin extends Component {
             rowData: null,
           }
         });
+        this.reloadData();
       }
     };
   }
@@ -119,7 +126,11 @@ class userBulletin extends Component {
           return <span className={cls('action-box')}>
             <ExtIcon
               className="read"
-              onClick={_ => this.handleEvent('view', record)}
+              onClick={e => {
+                e.stopPropagation();
+                this.handleEvent('view', record);
+
+              }}
               type="read"
               ignore='true'
               tooltip={
