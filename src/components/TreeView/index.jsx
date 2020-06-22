@@ -39,15 +39,18 @@ class TreeView extends Component {
   };
 
   updateTreeState = (searchValue, treeData) => {
-    const expandedKeys = [];
+    let expandedKeys = [];
     const filterTreeData = this.findNode(searchValue, cloneDeep(treeData));
     this.getExpandedKeys(filterTreeData, expandedKeys);
     const autoExpandParent = searchValue !== '';
+    if(!searchValue) {
+      expandedKeys = [];
+    }
     this.setState({
+      expandedKeys,
       filterTreeData,
       searchValue,
       autoExpandParent,
-      expandedKeys,
     });
   };
 
