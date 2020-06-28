@@ -230,10 +230,14 @@ class MessageHistory extends Component {
       bordered: false,
       toolBar: toolBarProps,
       remotePaging: true,
-      searchProperties: ['subject'],
+      searchProperties: ['subject', 'targetValue', 'targetName'],
       store: {
         type: 'POST',
         url: `${NOTIFY_SERVER_PATH}/messageHistory/findByPage`
+      },
+      sort: {
+        multiple: true,
+        field: { sendDate: 'desc', },
       },
     };
   };
