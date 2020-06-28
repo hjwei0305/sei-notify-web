@@ -2,7 +2,7 @@ import React, { Component, Fragment, } from 'react';
 import { withRouter } from 'umi';
 import { connect } from 'dva';
 import cls from 'classnames';
-import { Button, Tag, Tooltip, } from "antd";
+import { Button, Tag, Tooltip, Typography, } from "antd";
 import { ExtTable, ExtIcon, ComboList, } from 'suid';
 import moment from 'moment';
 import PageWrapper from '@/components/PageWrapper';
@@ -11,6 +11,7 @@ import ViewDetail from './components/ViewDetail';
 import styles from "./index.less";
 
 const { NOTIFY_SERVER_PATH, } = constants;
+const { Text, } = Typography;
 
 @withRouter
 @connect(({ messageHistory, loading, }) => ({ messageHistory, loading, }))
@@ -199,7 +200,7 @@ class MessageHistory extends Component {
         width: 220,
         required: true,
         render: text => {
-          return text ? <Tooltip placeholder="topLeft" title={text}>{text}</Tooltip> : '无';
+          return text ? <Fragment><Text copyable={{ text }} /><Tooltip placeholder="topLeft" title={text}>{text}</Tooltip></Fragment> : '无';
         }
       },
     ];
