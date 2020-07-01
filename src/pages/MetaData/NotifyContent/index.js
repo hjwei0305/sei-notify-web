@@ -166,14 +166,14 @@ class NotifyContent extends Component {
         title: formatMessage({ id: "notifyContent.code", defaultMessage: "代码" }),
         key: "code",
         dataIndex: "code",
-        width: 120,
+        width: 250,
         required: true,
       },
       {
         title: formatMessage({ id: "notifyContent.name", defaultMessage: "名称" }),
         key: "name",
         dataIndex: "name",
-        width: 220,
+        width: 300,
         required: true,
       }
     ];
