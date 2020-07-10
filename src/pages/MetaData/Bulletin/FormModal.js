@@ -2,11 +2,14 @@ import React, { PureComponent, Fragment } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
 import { DatePicker,Skeleton, message } from 'antd';
-import {RichEditor, ScrollBar, ComboGrid, Attachment, } from "suid";
+import {ScrollBar, ComboGrid, Attachment } from "suid";
+import BraftEditor from 'braft-editor';
 import moment from 'moment';
 import { constants, } from '@/utils';
 import { getBulletin, } from './service';
 import styles from "./FormMoal.less";
+// 引入编辑器样式
+import 'braft-editor/dist/index.css'
 
 const { PRIORITY_OPT, TARGETTYPE_OPT, NOTIFY_SERVER_PATH, BASE_URL } = constants;
 
@@ -73,7 +76,7 @@ class FormModal extends PureComponent {
         invalidDate: invalidDate.format('YYYY-MM-DD'),
         docIds: tempFiles ? tempFiles.map(attach => attach.id || attach.uid) : [],
       };
-      params = Object.assign({},editData || {}, params, formData);
+      params = Object.assign({},editData || {}, params, formData, { content: formData.content.toHTML()});
       save(params);
     });
   };
@@ -257,12 +260,21 @@ class FormModal extends PureComponent {
                   </FormItem>
                   <FormItem label={formatMessage({ id: "bulletin.content", defaultMessage: "通告内容" })}>
                     {getFieldDecorator("content", {
-                      initialValue: editData ? editData.content : "",
+                      validateTrigger: 'onBlur',
+                      initialValue: editData ? BraftEditor.createEditorState(editData.content) : "",
                       rules: [{
                         required: true,
-                        message: formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" })
+                        validator: (_, value, callback) => {
+                          if (value.isEmpty()) {
+                            callback(formatMessage({ id: "bulletin.content.required", defaultMessage: "通告内容不能为空！" }))
+                          } else {
+                            callback()
+                          }
+                        }
                       }]
-                    })(<RichEditor  contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}/>)}
+                    })(<BraftEditor
+                      contentStyle={{border:"1px solid #c4cfd5",height:"auto",minHeight:"50px"}}
+                    />)}
                   </FormItem>
                   <FormItem label="附件">
                   {getFieldDecorator("Attachments", {
