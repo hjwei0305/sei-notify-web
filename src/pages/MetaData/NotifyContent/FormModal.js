@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { Button, Form, Input, Modal, Row, Col } from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
+import MonacoEditor from '@/components/monaco';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -84,7 +85,7 @@ class FormModal extends PureComponent {
                     required: true,
                     message: formatMessage({ id: "notifyContent.content.required", defaultMessage: "内容不能为空" })
                   }]
-                })(<TextArea rows={5}/>)}
+                })(<MonacoEditor />)}
               </FormItem>
               <FormItem wrapperCol={buttonWrapper} className="btn-submit">
                 <Button

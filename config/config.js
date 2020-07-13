@@ -34,7 +34,7 @@ export default {
         title: '应用的标题',
         dll: {
           include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch', 'antd/es'],
-          exclude: ['@umijs/plugin-qiankun'],
+          exclude: ['@umijs/plugin-qiankun', 'monaco-editor'],
         },
         pwa:
           process.env.NODE_ENV === 'production'
