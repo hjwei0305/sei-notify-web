@@ -58,7 +58,7 @@ class FormModal extends PureComponent {
         width="90%"
       >
         <Row>
-          <Col span={9}>
+          <Col span={12}>
             <Form {...formItemLayout} layout="horizontal">
               <FormItem label={formatMessage({ id: "notifyContent.code", defaultMessage: "代码" })}>
                 {getFieldDecorator("code", {
@@ -98,7 +98,7 @@ class FormModal extends PureComponent {
               </FormItem>
             </Form>
           </Col>
-          <Col span={15}>
+          <Col span={12}>
             {<FormItem wrapperCol={contentWrapper}>
               <div style={{border:"1px solid #c4cfd5",margin:"2px 0 0 40px",borderRadius: "3px",
                 height:"auto",minHeight:"32px"}}>
