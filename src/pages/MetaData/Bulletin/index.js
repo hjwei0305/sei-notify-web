@@ -206,7 +206,7 @@ class Bulletin extends Component {
                 </Popconfirm>
               )
             ]);
-            if(moment().isBefore(record.invalidDate)) {
+            if(moment().isBefore(record.invalidDate, 'day') || moment().isSame(record.invalidDate, 'day')) {
               optList.unshift(authAction(
                 <ExtIcon
                   key={BULLETIN_BTN_KEY.RELEASE}
