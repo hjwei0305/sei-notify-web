@@ -1,11 +1,10 @@
 /*
  * @Author: zp
  * @Date:   2020-02-02 11:57:38
- * @Last Modified by: zp
- * @Last Modified time: 2020-06-12 10:31:57
+ * @Last Modified by: Eason
+ * @Last Modified time: 2020-08-10 10:47:40
  */
-import { message } from 'antd';
-import { utils } from 'suid';
+import { utils,message } from 'suid';
 import { getById } from './service';
 
 const { dvaModel } = utils;

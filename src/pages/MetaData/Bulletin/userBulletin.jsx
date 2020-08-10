@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import cls from "classnames";
 import withRouter from "umi/withRouter";
-import { Radio, Button, Tag, Select, Icon, Dropdown, Menu, message, } from 'antd';
+import { Radio, Button, Tag, Select, Icon, Dropdown, Menu } from 'antd';
 import { connect } from "dva";
-import { ExtTable, ExtIcon } from 'suid'
+import { ExtTable, ExtIcon,message } from 'suid'
 import queryString from "query-string";
 import { formatMessage, } from "umi-plugin-react/locale";
 import { constants } from "@/utils";

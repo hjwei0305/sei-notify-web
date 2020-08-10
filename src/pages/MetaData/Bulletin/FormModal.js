@@ -1,8 +1,8 @@
 import React, { PureComponent, Fragment } from "react";
 import {Button, Form, Input, Modal, Row, Radio} from "antd";
 import { formatMessage, FormattedMessage } from "umi-plugin-react/locale";
-import { DatePicker,Skeleton, message } from 'antd';
-import {ScrollBar, ComboGrid, Attachment } from "suid";
+import { DatePicker,Skeleton } from 'antd';
+import {ScrollBar, ComboGrid, Attachment,message } from "suid";
 import BraftEditor from 'braft-editor';
 import moment from 'moment';
 import { constants, } from '@/utils';

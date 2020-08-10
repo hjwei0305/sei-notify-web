@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, message } from 'antd';
+import { Icon } from 'antd';
+import { message } from 'suid';
 import screenfull from 'screenfull';
 
 export default class FullScreen extends React.Component {

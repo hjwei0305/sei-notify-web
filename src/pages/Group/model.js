@@ -1,8 +1,8 @@
 /*
 * @Author: zp
 * @Date:   2020-02-02 11:57:38
- * @Last Modified by: zp
- * @Last Modified time: 2020-04-23 09:40:28
+ * @Last Modified by: Eason
+ * @Last Modified time: 2020-08-10 10:47:20
 */
 import {
   delParentRow,
@@ -10,8 +10,7 @@ import {
   saveChild,
   delChildRow,
 } from "./service";
-import { message } from "antd";
-import { utils } from 'suid';
+import { utils, message } from 'suid';
 
 const { dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
@@ -29,7 +28,7 @@ export default modelExtend(model, {
     cVisible: false,
   },
   effects: {
-    * updatePageState ({ payload, }, { put, }) {
+    * updatePageState({ payload, }, { put, }) {
       yield put({
         type: "updateState",
         payload,
@@ -63,7 +62,7 @@ export default modelExtend(model, {
     },
     * delPRow({ payload }, { call }) {
       const result = yield call(delParentRow, payload);
-      const { message: msg, success,  } = result || {};
+      const { message: msg, success, } = result || {};
       message.destroy();
       if (success) {
         message.success(msg);
@@ -75,7 +74,7 @@ export default modelExtend(model, {
     },
     * delCRow({ payload }, { call }) {
       const result = yield call(delChildRow, payload);
-      const { message: msg, success,  } = result || {};
+      const { message: msg, success, } = result || {};
       message.destroy();
       if (success) {
         message.success(msg);

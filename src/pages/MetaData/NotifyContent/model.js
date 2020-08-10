@@ -1,7 +1,6 @@
 import {del, findOne, getList, save} from "./service";
-import { message } from "antd";
 import { formatMessage } from "umi-plugin-react/locale";
-import { utils } from 'suid';
+import { utils,message } from 'suid';
 
 const { pathMatchRegexp, dvaModel } = utils;
 const { modelExtend, model } = dvaModel;
