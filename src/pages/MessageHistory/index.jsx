@@ -78,10 +78,10 @@ class MessageHistory extends Component {
   getCategoryComboListProps = () => {
 
     return  {
-      // store: {
-      //   autoLoad: false,
-      //   url: `${NOTIFY_SERVER_PATH}/message/getCategory`,
-      // },
+       store: {
+         autoLoad: false,
+         url: `${NOTIFY_SERVER_PATH}/message/getCategory`,
+       },
       // {
       //   DingTalk: "钉钉"
       //   EMAIL: "电子邮件"
@@ -92,25 +92,25 @@ class MessageHistory extends Component {
       //   SMS: "手机短信"
       //   WeChat: "微信"
       // },
-      dataSource:[{
-        remark: '全部',
-        value: '',
-      }, {
-        remark: '电子邮件',
-        value: 'EMAIL'
-      }, {
-        remark: '微信小程序',
-        value: 'MiniApp'
-      }, {
-        remark: '手机短信',
-        value: 'SMS'
-      }, {
-        remark: '微信',
-        value: 'WeChat'
-      }, {
-        remark: '钉钉',
-        value: 'DingTalk'
-      }],
+    //   dataSource:[{
+    //     remark: '全部',
+    //     value: '',
+    //   }, {
+    //     remark: '电子邮件',
+    //     value: 'EMAIL'
+    //   }, {
+    //     remark: '微信小程序',
+    //     value: 'MiniApp'
+    //   }, {
+    //     remark: '手机短信',
+    //     value: 'SMS'
+    //   }, {
+    //     remark: '微信',
+    //     value: 'WeChat'
+    //   }, {
+    //     remark: '钉钉',
+    //     value: 'DingTalk'
+    //   }],
       placeholder: '请选择消息分类',
       value: '全部',
       style: {
