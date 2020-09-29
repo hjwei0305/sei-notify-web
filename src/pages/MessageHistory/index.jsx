@@ -102,9 +102,6 @@ class MessageHistory extends Component {
         remark: '微信小程序',
         value: 'MiniApp'
       }, {
-          value: 'SEI_BULLETIN',
-          remark: '通告'
-      }, {
           value: 'SEI_REMIND',
           remark: '提醒'
       }, {
