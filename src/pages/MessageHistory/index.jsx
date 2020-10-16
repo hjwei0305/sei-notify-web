@@ -221,13 +221,15 @@ class MessageHistory extends Component {
     const cascadeParams = {
       filters: [],
     };
-    cascadeParams.filters.push(
-      {
-        "fieldName": "category",
-        "value": category,
-        "operator": "EQ",
-      }
-    );
+    if (category) {
+      cascadeParams.filters.push(
+        {
+          "fieldName": "category",
+          "value": category,
+          "operator": "EQ",
+        }
+      );
+    }
     return {
       cascadeParams,
       columns,
