@@ -85,7 +85,7 @@ class ViewDetail extends React.Component {
                   <h1 style={{ padding: 20, textAlign: 'center', fontSize: 20 }}>{detail.subject}</h1>
                   {/* <h4 style={{ display: 'inline-block', marginRight: 5 }}>有效期：{`${detail.effectiveDate}~${detail.invalidDate}`}</h4> */}
                   <h4 style={{ display: 'inline-block', marginRight: 10 }}>优先级:{`${detail.priorityRemark}`}</h4>
-                  <h4 style={{ display: 'inline-block', marginRight: 10 }}>发布人:{`${detail.publishUserName}`}</h4>
+                  <h4 style={{ display: 'inline-block', marginRight: 10 }}>发布人:{`${detail.publishUserName === 'anonymous' ? '管理员' : detail.publishUserName }`}</h4>
                   <h4 style={{ display: 'inline-block', marginRight: 5 }}>发布日期:{`${detail.publishDate}`}</h4>
                   <Divider style={{
                     marginTop: 5,
