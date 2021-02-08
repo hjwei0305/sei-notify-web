@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect, } from 'dva';
 import { Attachment, } from 'suid';
+import cls from 'classnames';
 import { Skeleton, Divider, Empty, Row, Col, Button, Card, } from 'antd';
+
+import styles from './ViewDetail.less';
 
 import { constants, } from '@/utils';
 
@@ -91,10 +94,13 @@ class ViewDetail extends React.Component {
                     marginTop: 5,
                   }}/>
 
-                  <div style={{
-                    backgroundColor: 'rgba(208, 205, 205, 0.2)',
-                    padding: '12px',
-                  }}>
+                  <div
+                    style={{
+                      backgroundColor: 'rgba(208, 205, 205, 0.2)',
+                      padding: '12px',
+                    }}
+                    className={cls(styles['view-detail'])}
+                  >
                     <div dangerouslySetInnerHTML={{__html: detail.content}}></div>
                   </div>
                 <Divider style={{
