@@ -98,7 +98,7 @@ class FormModal extends PureComponent {
       remotePaging: true,
       store: {
         type: 'POST',
-        autoLoad: false,
+        autoLoad: true,
         url: `${NOTIFY_SERVER_PATH}/group/findPositionByPage`,
       },
       rowKey: "id",
@@ -130,7 +130,7 @@ class FormModal extends PureComponent {
       remotePaging: true,
       store: {
         type: 'POST',
-        autoLoad: false,
+        autoLoad: true,
         url: `${NOTIFY_SERVER_PATH}/group/getUserAccounts`,
       },
       rowKey: "itemId",
