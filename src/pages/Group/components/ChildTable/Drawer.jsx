@@ -191,7 +191,7 @@ class FormDrawer extends PureComponent {
       remotePaging: true,
       store: {
         type: 'POST',
-        autoLoad: false,
+        autoLoad: true,
         url: `${NOTIFY_SERVER_PATH}/group/getUserAccounts`,
       },
       rowKey: (item) => `${item.itemCode}${item.itemId}`,
