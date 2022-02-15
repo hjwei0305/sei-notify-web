@@ -81,3 +81,13 @@ export async function unreadSelected(data) {
   });
 }
 
+/** 知道了 */
+export function hasKonwn(params = {}) {
+  return request({
+    method: 'POST',
+    url: `${NOTIFY_SERVER_PATH}/message/read`,
+    params,
+  });
+}
+
+
