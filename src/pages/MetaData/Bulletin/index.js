@@ -13,7 +13,7 @@ import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
 const { BULLETIN_BTN_KEY, NOTIFY_SERVER_PATH, MSG_CATEGORY } = constants;
-const { authAction } = utils;
+const { authAction, eventBus } = utils;
 
 
 @withRouter
@@ -98,6 +98,7 @@ class Bulletin extends Component {
         }).then(res => {
           if (res.success) {
             this.reloadData();
+            eventBus.emit('messageCountChange');
           }
         });
         break;
