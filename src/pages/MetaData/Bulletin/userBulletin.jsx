@@ -3,7 +3,7 @@ import cls from "classnames";
 import withRouter from "umi/withRouter";
 import { Radio, Button, Tag, Select, Icon, Dropdown, Menu } from 'antd';
 import { connect } from "dva";
-import { ExtTable, ExtIcon,message } from 'suid'
+import { ExtTable, ExtIcon, message, utils } from 'suid'
 import queryString from "query-string";
 import { formatMessage, } from "umi-plugin-react/locale";
 import { constants } from "@/utils";
@@ -11,6 +11,7 @@ import ViewDetail from "./components/ViewDetail";
 import styles from "./index.less";
 
 const { NOTIFY_SERVER_PATH, TARGETTYPE_OPT, MSG_CATEGORY, } = constants;
+const { eventBus } = utils;
 
 @withRouter
 @connect(({ bulletin, loading }) => ({ bulletin, loading }))
@@ -103,6 +104,9 @@ class userBulletin extends Component {
         if(success) {
           this.tableRef && this.tableRef.manualSelectedRows([])
           this.reloadData();
+          if (key === 'readSelected' || key === 'unreadSelected') {
+            eventBus.emit('messageCountChange');
+          }
         }
       })
     } else {
