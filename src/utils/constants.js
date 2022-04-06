@@ -65,10 +65,10 @@ export const GROUP_CATEGORY = [{
   label: '岗位',
   value: 'POS',
 },
-// {
-//   label: '角色',
-//   value: 'ROLE',
-// }
+{
+  label: '角色',
+  value: 'ROLE',
+}
 ]
 
 export { CONST_GLOBAL, BULLETIN_BTN_KEY };

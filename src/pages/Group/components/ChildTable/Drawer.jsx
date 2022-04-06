@@ -42,7 +42,23 @@ class FormDrawer extends PureComponent {
       }));
       onSave(params);
     }
+  }
 
+  handleAssignRoles = () => {
+    const { pRowData, onSave, } = this.props;
+    const { data, } = this.state;
+    const { id: groupId, category, } = pRowData || {};
+
+    if (onSave) {
+      const params = data.map(item => ({
+        groupId,
+        category,
+        itemCode: item.code,
+        itemId: item.id,
+        itemName: item.name,
+      }));
+      onSave(params);
+    }
   }
 
   handleAssignPos = () => {
@@ -145,7 +161,13 @@ class FormDrawer extends PureComponent {
         </Tooltip>
       );
     }
-
+    if (category === 'ROLE') {
+      cmp = (
+        <Tooltip title="分配角色">
+          <Button loading={saving} icon="import" disabled={!(data && data.length)} type="primary" onClick={this.handleAssignRoles} />
+        </Tooltip>
+      );
+    }
     if(category === "ORG") {
       cmp = (
         <Tooltip title="分配组织">
@@ -211,6 +233,29 @@ class FormDrawer extends PureComponent {
     };
   }
 
+  getRoleListProps = () => {
+    return {
+      title: this.getTitle(),
+      showArrow: false,
+      checkbox: true,
+      onSelectChange: (keys, items) => {
+        this.setState({
+          data: items,
+        });
+      },
+      itemField: {
+        title: item => item.name,
+        description: item => item.code,
+      },
+      remotePaging: true,
+      store: {
+        type: 'POST',
+        autoLoad: true,
+        url: `${NOTIFY_SERVER_PATH}/group/findRoleByPage`,
+      },
+    };
+  }
+
   render() {
     const { visible, onCancel, rowData, pRowData } = this.props;
     const title = rowData ? '编辑' : '分配群组项';
@@ -234,6 +279,9 @@ class FormDrawer extends PureComponent {
         <div style={{ height: '100%',}}>
           {
             category === "USER" ? (<ListCard {...this.getComboGridProps()} />) : null
+          }
+          {
+            category === "ROLE" ? (<ListCard {...this.getRoleListProps()} />) : null
           }
           {
             category === "POS" ? (<ListCard {...this.getPosComboGridProps()} />) : null
